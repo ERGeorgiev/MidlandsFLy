@@ -1,0 +1,30 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+/// <summary>
+/// This class is used for storting information about employees that are considered flight deck.
+/// New instances are created using Employee_FlightDeck.CreateInstance() .
+/// </summary>
+
+public class Employee_FlightDeck : Employee
+{
+    // Using int instead of uint so type casting is not needed when assining a number generated from the System.Collections.Generic.Random class.
+    uint flyingHours;
+
+    public uint FlyingHours { get => flyingHours; set => flyingHours = value; }
+
+    private Employee_FlightDeck(string name = "random", uint flyingHours = 0) : base(name)
+    {
+        FlyingHours = flyingHours;
+    }
+
+    public static Employee_FlightDeck CreateInstance(string name = "random", uint flyingHours = 0)
+    {
+        if (LimitReached() == false)
+            return new Employee_FlightDeck(name, flyingHours);
+        else
+            throw new OverflowException("The maximum number of empoyees (" + employeeCount + ") has been reached.");
+    }
+}

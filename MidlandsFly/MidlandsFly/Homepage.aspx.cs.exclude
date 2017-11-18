@@ -1,0 +1,62 @@
+﻿using System;
+using System.Web.UI;
+
+public partial class Homepage : System.Web.UI.Page
+{
+    // To try catch table in HTML or smth like that in case there is no such table
+    private static Demonstration Demonstration = new Demonstration();
+
+    protected void Page_Load(object sender, EventArgs e)
+    {
+
+    }
+
+    protected void ImageButton1_Click(object sender, ImageClickEventArgs e)
+    {
+
+    }
+
+    protected void Button_Home(object sender, EventArgs e)
+    {
+        Response.Redirect("Homepage.aspx");
+    }
+
+    protected void Button2_Click(object sender, EventArgs e)
+    {
+        //Demonstration.RetrieveData();
+    }
+
+    protected void Button3_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("About.aspx");
+    }
+
+    protected void MidlandsFly_Demo(object sender, EventArgs e)
+    {
+        Demonstration.Demo(Demonstration.sql_default);
+    }
+
+    protected void MidlandsFly_Reset(object sender, EventArgs e)
+    {
+        Demonstration.sql_default.ResetTable(MidlandsFlySQL.Tables.Cargo_Aircraft);
+    }
+
+    protected void Ed_Demo(object sender, EventArgs e)
+    {
+        Demonstration.Demo(Demonstration.sql_ed);
+    }
+
+    protected void Ed_Reset(object sender, EventArgs e)
+    {
+        // Demonstration.sql_ed.ResetTable(MidlandsFlySQL.Tables.Cargo_Aircraft);
+        Demonstration.sql_ed.RecreateTable(MidlandsFlySQL.Tables.Cargo_Aircraft);
+    }
+
+    protected void Button6_Click(object sender, EventArgs e)
+    {
+    }
+
+    protected void Button7_Click(object sender, EventArgs e)
+    {
+    }
+}

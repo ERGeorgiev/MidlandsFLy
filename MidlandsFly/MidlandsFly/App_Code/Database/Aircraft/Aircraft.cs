@@ -55,6 +55,8 @@ public abstract class Aircraft
 
     public static byte RegNumber_letterCount => regNumber_letterCount;
 
+    public static byte RegNumber_symbolCount => (byte)(RegNumber_digitCount + RegNumber_letterCount);
+
     public uint FlyHours { get => flyHours; set => flyHours = value; }
 
     public uint LastMaintenance
@@ -110,12 +112,7 @@ public abstract class Aircraft
     {
         get
         {
-            return lastMaintenance_date.Year.ToString() 
-                + "-" + lastMaintenance_date.Month.ToString() 
-                + "-" + lastMaintenance_date.Day.ToString()
-                + " " + lastMaintenance_date.Hour.ToString()
-                + ":" + "0"
-                + ":" + "0";
+            return DateToString(LastMaintenance_date);
         }
     }
 
@@ -125,6 +122,16 @@ public abstract class Aircraft
     #endregion Properties
 
     #region Methods
+
+    public static string DateToString(DateTime date)
+    {
+        return date.Year.ToString()
+            + "-" + date.Month.ToString()
+            + "-" + date.Day.ToString()
+            + " " + date.Hour.ToString()
+            + ":" + "0"
+            + ":" + "0";
+    }
 
     public bool NeedsMaintenance()
     {

@@ -38,7 +38,7 @@ public partial class Homepage : System.Web.UI.Page
 
     protected void MidlandsFly_Reset(object sender, EventArgs e)
     {
-        Demonstration.sql_default.ResetTable(MidlandsFlySQL.Tables.Cargo_Aircraft);
+        Demonstration.sql_default.ResetTable(SqlMidlandsFly.Tables.Cargo_Aircraft);
     }
 
     protected void Ed_Demo(object sender, EventArgs e)
@@ -48,8 +48,8 @@ public partial class Homepage : System.Web.UI.Page
 
     protected void Ed_Reset(object sender, EventArgs e)
     {
-        // Demonstration.sql_ed.ResetTable(MidlandsFlySQL.Tables.Cargo_Aircraft);
-        Demonstration.sql_ed.RecreateTable(MidlandsFlySQL.Tables.Cargo_Aircraft);
+        // Demonstration.sql_ed.ResetTable(SqlMidlandsFly.Tables.Cargo_Aircraft);
+        Demonstration.sql_ed.RecreateTable(SqlMidlandsFly.Tables.Cargo_Aircraft);
     }
 
     protected void Button6_Click(object sender, EventArgs e)

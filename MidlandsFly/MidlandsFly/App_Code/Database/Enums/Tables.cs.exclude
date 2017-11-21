@@ -1,0 +1,20 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+/// <summary>
+/// Enum for 
+/// </summary>
+
+    // Setting up enum of tables to have already set names, reducing the chance for a programming error.
+    // I'm planning to use ToString() to get table names.
+    public enum Tables
+    {
+        Cargo_Aircraft,
+        Passenger_Aircraft,
+        Employees,
+        Employees_FlightHours,
+        Employees_MaintenanceHistory,
+        Employees_Assignment
+    }

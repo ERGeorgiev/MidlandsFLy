@@ -36,14 +36,24 @@ namespace Database
             // TODO: To Improve
             private bool Connect()
             {
+                DateTime startTime = DateTime.Now;
                 if (connection.State == System.Data.ConnectionState.Closed)
                     connection.Open();
+                TimeSpan span = new TimeSpan();
+                while (connection.State == System.Data.ConnectionState.Connecting)
+                {
+                    span = DateTime.Now.Subtract(startTime);
+                    if (span.Seconds > 5)
+                    {
+                        throw new TimeoutException("Unable to connect");
+                    }
+                }
                 return true;
             }
 
             private bool Disconnect()
             {
-                if (connection.State != System.Data.ConnectionState.Closed)
+                if (connection.State == System.Data.ConnectionState.Open)
                     connection.Close();
                 return true;
             }
@@ -106,8 +116,8 @@ namespace Database
             {
                 List<string> received = new List<string>();
 
-                Connect();
                 command.Connection = connection;
+                Connect();
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
                     received = ExecuteRead(reader, columnNumber);

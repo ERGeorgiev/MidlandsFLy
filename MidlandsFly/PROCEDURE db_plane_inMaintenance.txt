@@ -1,5 +1,0 @@
-CREATE PROCEDURE db_plane_inMaintenance @regNumber varchar(6)
-as
- SELECT CAST(COUNT(aircraft_number) as bit)
- FROM maintenance
- where aircraft_number=@regNumber

@@ -1,0 +1,10 @@
+CREATE PROCEDURE db_planesActive
+as
+select aircraft_number from cargo_aircraft t1
+where not exists(select aircraft_number from maintenance t2 where t1.aircraft_number=t2.aircraft_number )
+union
+select aircraft_number from Passenger_aircraft t1
+where not exists(select aircraft_number from maintenance t2 where t1.aircraft_number=t2.aircraft_number );
+
+
+exec db_planesActive

@@ -129,7 +129,7 @@ public abstract class Aircraft
             + "-" + date.Month.ToString()
             + "-" + date.Day.ToString()
             + " " + date.Hour.ToString()
-            + ":" + "0"
+            + ":" + date.Minute.ToString()
             + ":" + "0";
     }
 

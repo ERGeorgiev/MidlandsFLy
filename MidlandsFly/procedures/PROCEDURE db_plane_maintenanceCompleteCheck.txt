@@ -1,0 +1,9 @@
+CREATE PROCEDURE db_plane_maintenanceCompleteCheck @regNumber varchar(6)
+as
+SELECT CASE 
+            WHEN datediff(hour, MAINTENANCE_START_DATE, SYSDATETIME()) >24
+               THEN 1 
+               ELSE 0 
+       END as TOTFORMAIN
+FROM maintenance
+where AIRCRAFT_NUMBER=@regnumber

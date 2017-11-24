@@ -1,0 +1,7 @@
+CREATE PROCEDURE dbo.addflyhrs
+AS
+UPDATE cargo_aircraft 
+SET flying_hours = flying_hours + 24
+
+update passenger_aircraft
+SET flying_hours = flying_hours + 24 ;

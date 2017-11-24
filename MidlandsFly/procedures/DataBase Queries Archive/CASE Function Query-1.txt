@@ -1,0 +1,14 @@
+SELECT CASE 
+            WHEN flying_hours -  LAST_MAINTENANCE > 1000
+               THEN 1 
+               ELSE 0 
+       END as TOTFORMAIN, * 
+FROM Cargo_Aircraft;
+---------------------------------------------------------------------------
+SELECT CASE 
+            WHEN flying_hours -  LAST_MAINTENANCE > 1000
+               THEN 1 
+               ELSE 0 
+       END as TOTFORMAIN, * 
+FROM Cargo_Aircraft
+where AIRCRAFT_NUMBER='CAA001' ;

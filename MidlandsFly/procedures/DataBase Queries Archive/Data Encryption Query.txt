@@ -1,0 +1,5 @@
+INSERT INTO  dbo.[test1] VALUES('encrypt',EncryptByPassPhrase('12', 'saif'));
+
+select * from test1;
+
+SELECT tes1,convert(varchar(10), DECRYPTBYPASSPHRASE ('12',tes2)) FROM test1;

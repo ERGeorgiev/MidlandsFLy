@@ -1,0 +1,38 @@
+CREATE PROCEDURE dbo.chkregnum @planenum varchar(6)
+as
+delete from maintenance
+where EXISTs (select *,  datediff(minute, MAINTENANCE_START_DATE, SYSDATETIME()) as theDateDiff
+              from maintenance
+              where 
+              datediff(minute, MAINTENANCE_START_DATE, SYSDATETIME()) >1  )
+and AIRCRAFT_NUMBER =@planenum
+
+update passenger_aircraft
+set last_maintenance = flying_hours 
+where aircraft_number = @planenum
+ 
+update cargo_aircraft
+set last_maintenance = flying_hours
+where aircraft_number = @planenum;
+----------------------------------------------------------------------------
+exec dbo.chkregnum @planenum='CAA005'; 
+-----------------------------------------------------------------------------
+USE ponyairline
+GO
+CREATE PROCEDURE dbo.addflyhrs24
+AS
+UPDATE cargo_aircraft 
+SET flying_hours = flying_hours + 1
+
+update passenger_aircraft
+SET flying_hours = flying_hours + 1 ;
+------------------------------------------------------------------------------
+USE ponyairline
+GO
+CREATE PROCEDURE dbo.addflyhrs100
+AS
+UPDATE cargo_aircraft 
+SET flying_hours = flying_hours + 4
+
+update passenger_aircraft
+SET flying_hours = flying_hours + 4 ;

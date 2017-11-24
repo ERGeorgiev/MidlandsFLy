@@ -1,0 +1,13 @@
+UPDATE f
+SET f.flying_hours = '10' 
+FROM flying_hours_table as f INNER JOIN assignment_table as a
+       ON f.employee_id = a.employee_id
+WHERE a.aircraft_number = 'AAA111';
+
+----------------------------------------------------------------------
+
+UPDATE f
+SET f.flying_hours = f.flying_hours + 10 
+FROM flying_hours_table as f INNER JOIN assignment_table as a
+       ON f.employee_id = a.employee_id
+WHERE a.aircraft_number = 'AAA111';

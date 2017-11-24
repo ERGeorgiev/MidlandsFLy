@@ -1,0 +1,13 @@
+SELECT CASE 
+            WHEN flying_hours -  LAST_MAINTENANCE > 1000
+               THEN 1 
+               ELSE 0 
+       END as TOTFORMAIN, * 
+FROM Cargo_Aircraft
+union
+SELECT CASE 
+            WHEN flying_hours -  LAST_MAINTENANCE > 1000
+               THEN 1 
+               ELSE 0 
+       END as TOTFORMAIN, * 
+FROM passenger_aircraft;

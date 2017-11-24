@@ -1,0 +1,46 @@
+CREATE PROCEDURE dbo.isrtmnts2
+as 
+declare 
+
+@planenum varchar(6)
+
+set @planenum = (SELECT AIRCRAFT_NUMBER
+FROM cargo_aircraft
+WHERE
+flying_hours - LAST_MAINTENANCE > 200
+
+union
+SELECT AIRCRAFT_NUMBER
+FROM passenger_aircraft
+WHERE
+flying_hours - LAST_MAINTENANCE > 200
+)
+begin
+insert into maintenance values(@planenum,SYSDATETIME())
+End
+
+exec dbo.isrtmnts2;
+
+-----------------------------------------------------------------------
+
+CREATE PROCEDURE dbo.isrtmnts @planenum varchar(6)
+as 
+If Exists(SELECT AIRCRAFT_NUMBER
+FROM cargo_aircraft
+WHERE
+flying_hours - LAST_MAINTENANCE > 200
+and 
+AIRCRAFT_NUMBER = @planenum
+union
+SELECT AIRCRAFT_NUMBER
+FROM passenger_aircraft
+WHERE
+flying_hours - LAST_MAINTENANCE > 200
+and 
+AIRCRAFT_NUMBER = @planenum)
+Begin
+insert into maintenance values(@planenum,SYSDATETIME())
+End
+
+
+exec dbo.isrtmnts @planenum ='CAA009';

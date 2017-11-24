@@ -1,0 +1,7 @@
+select AIRCRAFT_NUMBER,flying_hours -  LAST_MAINTENANCE from Cargo_Aircraft
+where flying_hours -  LAST_MAINTENANCE > 10
+
+union 
+
+select AIRCRAFT_NUMBER,flying_hours -  LAST_MAINTENANCE from passenger_aircraft
+where flying_hours -  LAST_MAINTENANCE > 10;

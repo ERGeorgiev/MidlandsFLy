@@ -23,21 +23,15 @@
                 You can easily find a web hosting company that offers the right mix of features and price for your applications.
             </p>
             <p>
+                Favicon.ico generated form http://icoconvert.com/</p>
+            <p>
                 <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301950">Learn more &raquo;</a>
             </p>
         </div>
     </div>   
     
-    <h3>Contacts:</h3>
-    <address>
-        One Microsoft Way<br />
-        Redmond, WA 98052-6399<br />
-        <abbr title="Phone">P:</abbr>
-        425.555.0100
-    </address>
-
     <address>
         <strong>T-SQL and Azure Management:</strong> <a href="mailto:Support@example.com">Saif Alzubi</a><br />
         <strong>C# and HTML Software Developer:</strong> <a href="mailto:Marketing@example.com">Eduard Georgiev</a><br />
-        <strong>Testing and Documentation:</strong> <a href="mailto:Marketing@example.com">John Watts and Oumaru Beyai</a></address>
+        <strong>Testing and Documentation:</strong> <a href="mailto:Marketing@example.com">Oumaru Beyai</a></address>
 </asp:Content>

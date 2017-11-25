@@ -31,10 +31,12 @@ namespace MidlandsFly
             public void Insert(CargoAircraft aircraft, byte columnNumber = 0)
             {
                 SqlMidlandsFly.Instance.AddCommand(InsertCmd(aircraft));
+                SqlStage.Instance.Insert(aircraft.RegNumber);
             }
             public void Insert(PassengerAircraft aircraft, byte columnNumber = 0)
             {
                 SqlMidlandsFly.Instance.AddCommand(InsertCmd(aircraft));
+                SqlStage.Instance.Insert(aircraft.RegNumber);
             }
             public SqlCommand InsertCmd(CargoAircraft aircraft)
             {

@@ -172,25 +172,37 @@ namespace Database
                 return output;
             }
 
-            public void CreateTable(SqlTable table)
+            public void CreateTable(params SqlTable[] tables)
             {
-                AddCommand(table.Create());
+                foreach (SqlTable table in tables)
+                {
+                    AddCommand(table.Create());
+                }
             }
 
-            public void DropTable(SqlTable table)
+            public void DropTable(params SqlTable[] tables)
             {
-                AddCommand(table.Drop());
+                foreach (SqlTable table in tables)
+                {
+                    AddCommand(table.Drop());
+                }
             }
 
-            public void ResetTable(SqlTable table)
+            public void ResetTable(params SqlTable[] tables)
             {
-                AddCommand(table.Delete());
+                foreach (SqlTable table in tables)
+                {
+                    AddCommand(table.Delete());
+                }
             }
 
-            public void RecreateTable(SqlTable table)
+            public void RecreateTable(params SqlTable[] tables)
             {
-                DropTable(table);
-                CreateTable(table);
+                foreach (SqlTable table in tables)
+                {
+                    DropTable(table);
+                    CreateTable(table);
+                }
             }
 
             // Using params to be able to chech multiple tables at once

@@ -36,7 +36,9 @@
                 }
 
         article {
-            margin-left: 250px;
+            float: none !important;
+            margin-left: auto;
+            margin-right: auto;
             border-left: 1px solid gray;
             padding: 1em;
             overflow: hidden;
@@ -44,7 +46,7 @@
     </style>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%: Page.Title %> - My ASP.NET Application</title>
+    <title><%: Page.Title %>Midlands Fly Database</title>
 
     <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/bundles/modernizr") %>
@@ -98,10 +100,22 @@
                         </AnonymousTemplate>
                         <LoggedInTemplate>
                             <ul class="nav navbar-nav">
-                                <li><a runat="server" href="~/Fleet">Fleet</a></li>
-                                <li><a runat="server" href="~/Employees">Employees</a></li>
+                                <li><a runat="server" href="~/DatabasePages/Fleet">Fleet</a></li>
+                                <li><a runat="server" href="~/DatabasePages/Employees">Employees</a></li>
+                                <li><a runat="server" href="~/DatabasePages/History">History</a></li>
+                                <li><a runat="server" href="~/DatabasePages/Allocation">Allocation</a></li>
                             </ul>
                             <ul class="nav navbar-nav navbar-right">
+                                <li class="k-dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                        <asp:Literal runat="server" Text="Simulation" /><span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#" ">New</a></li>
+                                        <li><a href="#" ">Clear Tables</a></li>
+                                        <li><a href="#" ">Add 24 Hours</a></li>
+                                        <li><a href="#" ">Add 100 Hours</a></li>
+                                    </ul>
+                                </li>
                                 <li><a runat="server" href="~/Account/Manage" title="Manage your account">Hello, <%: Context.User.Identity.GetUserName()  %>!</a></li>
                                 <li>
                                     <asp:LoginStatus runat="server" LogoutAction="Redirect" LogoutText="Log off" LogoutPageUrl="~/" OnLoggingOut="Unnamed_LoggingOut" />

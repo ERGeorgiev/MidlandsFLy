@@ -8,6 +8,7 @@ using System.Collections.Generic;
 public class MaintenanceHistory
 {
     static List<string> desc = new List<string>();
+    static Random random = new Random();
 
     private string regNumber;
     private string id;
@@ -27,8 +28,6 @@ public class MaintenanceHistory
 
     public static string GenerateRandomDescription()
     {
-        Random random = new Random();
-
         if (desc.Count == 0)
         {
             desc.Add("SERVICED THE BLUE HYDRAULIC SYSTEM RESERVOIR.");

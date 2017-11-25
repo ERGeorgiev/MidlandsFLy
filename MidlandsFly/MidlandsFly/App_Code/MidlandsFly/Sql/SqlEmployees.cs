@@ -36,7 +36,7 @@ namespace MidlandsFly
             public SqlCommand InsertCmd(Employee employee, string regNumber)
             {
                 string text = string.Empty;
-                text = String.Format("INSERT INTO {0} VALUES('{1}','{2}','{3}');",
+                text = String.Format("INSERT INTO {0} VALUES('{1}',EncryptByPassPhrase('12','{2}'),'{3}');",
                     SqlMidlandsFly.Instance.Table_Employees.Name,
                     MathExt.IntToFixedString((int)employee.Id, Employee.IdLength),
                     employee.Name,

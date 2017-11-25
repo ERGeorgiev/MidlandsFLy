@@ -22,14 +22,15 @@ public class Employee
 {
     static List<string> employeeFirstNames = new List<string>();
     static List<string> employeeLastNames = new List<string>();
+    static Random random = new Random();
     // A variable to track the employeeCount, in order to assign a unique number to each employee.
     protected static uint employeeCount;
     private uint id;
     private const byte idDigits = 5;  // The maximum number of digits in an id.
     private string name;
-    public static byte name_length = 20;
+    public static byte name_length = 30;
     EmployeeType employeeType;
-    public static byte employeeType_length = 20;
+    public static byte employeeType_length = 30;
 
     public uint Id { get => id; private set => id = value; }
     public string Name { get => name; private set => name = value; }
@@ -68,8 +69,6 @@ public class Employee
 
     static string GetRandomName()
     {
-        Random random = new Random();
-
         if (employeeFirstNames.Count == 0 || employeeLastNames.Count == 0)
         {
             fillEmployeeNames();

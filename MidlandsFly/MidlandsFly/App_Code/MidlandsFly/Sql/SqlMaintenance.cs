@@ -28,26 +28,17 @@ namespace MidlandsFly
                 }
             }
 
-            public void Insert(string regNumber, string date = "")
+            public void Insert(string regNumber, int hours = 0)
             {
-                string maintenanceDate = date;
-                if (maintenanceDate == "")
-                {
-                    maintenanceDate = Aircraft.DateToString(DateTime.Now);
-                }
-                SqlMidlandsFly.Instance.AddCommand(InsertCmd(regNumber, maintenanceDate));
+                SqlMidlandsFly.Instance.AddCommand(InsertCmd(regNumber, hours));
             }
-            public void Insert(string regNumber, DateTime date)
-            {
-                SqlMidlandsFly.Instance.AddCommand(InsertCmd(regNumber, Aircraft.DateToString(date)));
-            }
-            public SqlCommand InsertCmd(string regNumber, string date)
+            public SqlCommand InsertCmd(string regNumber, int hours = 0)
             {
                 string text;
-                text = String.Format("INSERT INTO {0} VALUES('{1}','{2}');",
+                text = String.Format("INSERT INTO {0} VALUES('{1}',{2});",
                     SqlMidlandsFly.Instance.Table_Maintenance.Name,
                     regNumber, 
-                    date);
+                    hours);
                 return new SqlCommand(text);
             }
 

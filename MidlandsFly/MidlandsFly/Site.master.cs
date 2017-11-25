@@ -6,6 +6,10 @@ using System.Web;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using MidlandsFly.Sql;
+using MidlandsFly;
+using Database.Enums;
+using System.Data.SqlClient;
 
 public partial class SiteMaster : MasterPage
 {
@@ -73,4 +77,30 @@ public partial class SiteMaster : MasterPage
     {
         Context.GetOwinContext().Authentication.SignOut();
     }
+
+    protected void NewSimulation(object sender, EventArgs e)
+    {
+        Simulation.Demo();
+    }
+
+    protected void ClearTables(object sender, EventArgs e)
+    {
+        SqlMidlandsFly.Instance.RecreateTables();
+        SqlMidlandsFly.Instance.Execute();
+    }
+
+    protected void AddHours_24(object sender, EventArgs e)
+    {
+
+    }
+
+    protected void AddHours_100(object sender, EventArgs e)
+    {
+
+    }
+    //protected void AddHoursToPlane(object sender, EventArgs e)
+    //{
+    //    SqlMidlandsFly.Instance.AddHours((uint)Int32.Parse(TextBox_AddHoursToPlane_Hours.Text), TextBox_AddHoursToPlane_RegNumber.Text);
+    //    SqlMidlandsFly.Instance.Execute();
+    //}
 }

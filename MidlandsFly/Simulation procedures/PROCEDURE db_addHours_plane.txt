@@ -1,0 +1,18 @@
+create PROCEDURE db_addHours_plane @regNumber varchar(6)
+as
+
+UPDATE cargo_aircraft
+SET FLYING_HOURS = FLYING_HOURS + FLIGHT_DURATION
+FROM stage
+WHERE
+  cargo_aircraft.AIRCRAFT_NUMBER = stage.AIRCRAFT_NUMBER
+  and cargo_aircraft.AIRCRAFT_NUMBER = @regNumber
+
+UPDATE passenger_aircraft
+SET FLYING_HOURS = FLYING_HOURS + FLIGHT_DURATION
+FROM stage
+WHERE
+ passenger_aircraft.AIRCRAFT_NUMBER = stage.AIRCRAFT_NUMBER
+  and passenger_aircraft.AIRCRAFT_NUMBER = @regNumber
+
+  select * from stage;

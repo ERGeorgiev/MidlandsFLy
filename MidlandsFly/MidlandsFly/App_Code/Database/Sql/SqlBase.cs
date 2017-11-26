@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Web.UI;
 
 /// <summary>
 /// Summary description for SqlBase
@@ -15,7 +16,7 @@ namespace Database
         {
             private List<SqlCommand> commands = new List<SqlCommand>();
 
-            private SqlConnection connection;
+            private string connectionString;
 
             public SqlBase(
                 string dataSource = "airlineservercovuni.database.windows.net",
@@ -30,101 +31,77 @@ namespace Database
                     Password = password,
                     InitialCatalog = initialCatalog
                 };
-                this.connection = new SqlConnection(builder.ConnectionString);
-            }
-
-            // TODO: To Improve
-            private bool Connect()
-            {
-                DateTime startTime = DateTime.Now;
-                if (connection.State == System.Data.ConnectionState.Closed)
-                    connection.Open();
-                TimeSpan span = new TimeSpan();
-                while (connection.State == System.Data.ConnectionState.Connecting)
-                {
-                    span = DateTime.Now.Subtract(startTime);
-                    if (span.Seconds > 5)
-                    {
-                        throw new TimeoutException("Unable to connect");
-                    }
-                }
-                return true;
-            }
-
-            private bool Disconnect()
-            {
-                if (connection.State == System.Data.ConnectionState.Open)
-                    connection.Close();
-                return true;
+                this.connectionString = builder.ConnectionString;
             }
 
             public void AddCommand(SqlCommand sqlcommand)
             {
-                SqlCommand sqlcommandMod = sqlcommand;
-                sqlcommandMod.Connection = connection;
-                commands.Add(sqlcommandMod);
+                commands.Add(sqlcommand);
             }
 
             public void AddCommand(string sqlcommand)
             {
-                SqlCommand sqlcommandMod = new SqlCommand(sqlcommand);
-                sqlcommandMod.Connection = connection;
-                commands.Add(sqlcommandMod);
+                commands.Add(new SqlCommand(sqlcommand));
             }
 
             // The following method should be used with exception handling:
             public List<string> Execute(byte columnNumber = 0)
             {
                 List<string> received = new List<string>();
-                SqlCommand commandBurst = new SqlCommand(CommandsToString(), connection);
-                List<SqlCommand> commandsExecuted = new List<SqlCommand>();
-
-                Connect();
-                try // Try burst method for speed
+                
+                try
                 {
-                    using (SqlDataReader reader = commandBurst.ExecuteReader())
+                    using (SqlConnection connection = new SqlConnection(connectionString))
                     {
-                        received = ExecuteRead(reader, columnNumber);
-                    }
-                }
-                catch (SqlException) // Slow method for easy debug
-                {
-                    foreach (SqlCommand command in commands)
-                    {
-                        if (command == commands.Last()) // Read only the last output
+                        connection.Open();
+                        try
                         {
-                            using (SqlDataReader reader = command.ExecuteReader())
+                            SqlCommand commandBurst = new SqlCommand(CommandsToString(), connection);
+                            using (SqlDataReader reader = commandBurst.ExecuteReader())
                             {
                                 received = ExecuteRead(reader, columnNumber);
                             }
                         }
-                        else
+                        catch (Exception exBurst)
                         {
-                            command.ExecuteNonQuery();
+                            throw;
+                            //foreach (SqlCommand command in commands)
+                            //{
+                            //    command.Connection = connection;
+                            //    using (SqlDataReader reader = command.ExecuteReader())
+                            //    {
+                            //        received = ExecuteRead(reader, columnNumber);
+                            //    }
+                            //}
                         }
                     }
                 }
+                catch (Exception ex)
+                {
+                    throw;
+                }
                 finally
                 {
-                    Disconnect();
                     ClearCommands();
                 }
+
                 return received;
             }
 
             public List<string> Execute(SqlCommand command, byte columnNumber = 0)
             {
                 List<string> received = new List<string>();
-
-                command.Connection = connection;
-                Connect();
-                using (SqlDataReader reader = command.ExecuteReader())
+                
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    received = ExecuteRead(reader, columnNumber);
+                    command.Connection = connection;
+                    connection.Open();
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                            received = ExecuteRead(reader, columnNumber);
+                            return received;
+                    }
                 }
-                Disconnect();
-
-                return received;
             }
 
             private List<string> ExecuteRead(SqlDataReader reader, byte columnNumber = 0)
@@ -139,9 +116,11 @@ namespace Database
                         case "int":
                             received.Add(reader.GetInt32(columnNumber).ToString());
                             break;
+
                         case "varchar":
                             received.Add(reader.GetString(columnNumber));
                             break;
+
                         default:
                             try
                             {
@@ -226,7 +205,7 @@ namespace Database
                         return false;
                     }
                     else
-                        return true;
+                        throw;
                 }
             }
         }

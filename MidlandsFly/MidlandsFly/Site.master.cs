@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Security.Claims;
-using System.Security.Principal;
+﻿using MidlandsFly;
+using MidlandsFly.Sql;
+using System;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using MidlandsFly.Sql;
-using MidlandsFly;
-using Database.Enums;
-using System.Data.SqlClient;
 
 public partial class SiteMaster : MasterPage
 {
@@ -70,7 +65,6 @@ public partial class SiteMaster : MasterPage
 
     protected void Page_Load(object sender, EventArgs e)
     {
-
     }
 
     protected void Unnamed_LoggingOut(object sender, LoginCancelEventArgs e)
@@ -78,26 +72,70 @@ public partial class SiteMaster : MasterPage
         Context.GetOwinContext().Authentication.SignOut();
     }
 
-    protected void NewSimulation(object sender, EventArgs e)
+    protected void AddRecords(object sender, EventArgs e)
     {
-        Simulation.Demo();
+        if ((System.Web.HttpContext.Current.User != null) && System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
+        {
+            try
+            {
+                if (SqlMidlandsFly.Instance.TableExists(
+                    SqlMidlandsFly.Instance.Table_Passenger,
+                    SqlMidlandsFly.Instance.Table_Cargo,
+                    SqlMidlandsFly.Instance.Table_Employees,
+                    SqlMidlandsFly.Instance.Table_Assignment,
+                    SqlMidlandsFly.Instance.Table_Maintenance,
+                    SqlMidlandsFly.Instance.Table_MaintenanceHistory,
+                    SqlMidlandsFly.Instance.Table_Stage))
+                {
+                    Simulation.Demo();
+                }
+                else
+                {
+                    ErrMessage = String.Format("Table {0} does not exist. Please restart the simulation or contact an administrator.", SqlMidlandsFly.Instance.Table_Employees.Name);
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrMessage = String.Format("An error has occured! Error message: {0}", ex.Message);
+            }
+        }
     }
 
     protected void ClearTables(object sender, EventArgs e)
     {
-        SqlMidlandsFly.Instance.RecreateTables();
-        SqlMidlandsFly.Instance.Execute();
+        if ((System.Web.HttpContext.Current.User != null) && System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
+        {
+            SqlMidlandsFly.Instance.RecreateTables();
+            SqlMidlandsFly.Instance.Execute();
+        }
     }
 
     protected void AddHours_24(object sender, EventArgs e)
     {
-
+        if ((System.Web.HttpContext.Current.User != null) && System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
+        {
+        }
     }
 
     protected void AddHours_100(object sender, EventArgs e)
     {
-
+        if ((System.Web.HttpContext.Current.User != null) && System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
+        {
+        }
     }
+
+    public string ErrMessage
+    {
+        get
+        {
+            return ErrorMessage.Text;
+        }
+        set
+        {
+            ErrorMessage.Text = value;
+        }
+    }
+
     //protected void AddHoursToPlane(object sender, EventArgs e)
     //{
     //    SqlMidlandsFly.Instance.AddHours((uint)Int32.Parse(TextBox_AddHoursToPlane_Hours.Text), TextBox_AddHoursToPlane_RegNumber.Text);

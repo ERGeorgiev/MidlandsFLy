@@ -56,13 +56,15 @@ namespace MidlandsFly
                     new SqlParameter(Parameter.regNumber, System.Data.SqlDbType.VarChar, Aircraft.RegNumber_symbolCount),
                     new SqlParameter(Parameter.flyHours, System.Data.SqlDbType.Int),
                     new SqlParameter(Parameter.lastMaintenance, System.Data.SqlDbType.Int),
-                    new SqlParameter(Parameter.capacity_mTonnes, System.Data.SqlDbType.Int));
+                    new SqlParameter(Parameter.capacity_mTonnes, System.Data.SqlDbType.Int),
+                    new SqlParameter(Parameter.last_update, System.Data.SqlDbType.DateTime));
                 Table_Passenger = new SqlTable(
                     "Passenger_Aircraft",
                     new SqlParameter(Parameter.regNumber, System.Data.SqlDbType.VarChar, Aircraft.RegNumber_symbolCount),
                     new SqlParameter(Parameter.flyHours, System.Data.SqlDbType.Int),
                     new SqlParameter(Parameter.lastMaintenance, System.Data.SqlDbType.Int),
-                    new SqlParameter(Parameter.capacity_seating, System.Data.SqlDbType.Int));
+                    new SqlParameter(Parameter.capacity_seating, System.Data.SqlDbType.Int),
+                    new SqlParameter(Parameter.last_update, System.Data.SqlDbType.DateTime));
                 Table_Employees = new SqlTable(
                     "Employees",
                     new SqlParameter(Parameter.id, System.Data.SqlDbType.VarChar, Employee.IdLength),

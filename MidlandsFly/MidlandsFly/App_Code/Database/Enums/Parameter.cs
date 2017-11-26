@@ -26,6 +26,7 @@ namespace Database
             public static string stage_hour = "Stage_Hour";
             public static string stage_date = "Stage_Date";
             public static string flight_duration = "Flight_Duration";
+            public static string last_update = "Last_Update";
         }
     }
 }

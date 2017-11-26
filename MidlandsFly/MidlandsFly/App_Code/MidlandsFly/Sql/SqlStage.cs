@@ -27,7 +27,6 @@ namespace MidlandsFly
                     return instance;
                 }
             }
-            // TODO: Do more researach on <T> and obj, maybe this code can be improved.
             public void Insert(string regNumber, byte columnNumber = 0)
             {
                 SqlMidlandsFly.Instance.AddCommand(InsertCmd(regNumber));

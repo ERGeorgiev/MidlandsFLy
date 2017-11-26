@@ -2,6 +2,7 @@
 using System.Web.UI;
 using MidlandsFly.Sql;
 using MidlandsFly;
+using System.Web.UI.WebControls;
 
 public partial class Homepage : System.Web.UI.Page
 {
@@ -21,17 +22,32 @@ public partial class Homepage : System.Web.UI.Page
         }
     }
 
+    protected void GridView_Align(object sender, GridViewRowEventArgs e)
+    {
+        if (e.Row.RowType == DataControlRowType.DataRow)
+        {
+            e.Row.HorizontalAlign = HorizontalAlign.Left;
+        }
+    }
+
     protected void ChangeGrid(object sender, EventArgs e)
     {
-        if (SqlMidlandsFly.Instance.TableExists(SqlMidlandsFly.Instance.Table_Employees))
+        try
         {
-            MidlandsFly_AircraftData.SelectCommand = command;
-            GridViewTable.DataSourceID = MidlandsFly_AircraftData.ID;
-            GridViewTable.DataBind();
+            if (SqlMidlandsFly.Instance.TableExists(SqlMidlandsFly.Instance.Table_Cargo, SqlMidlandsFly.Instance.Table_Passenger))
+            {
+                MidlandsFly_AircraftData.SelectCommand = command;
+                GridViewTable.DataSourceID = MidlandsFly_AircraftData.ID;
+                GridViewTable.DataBind();
+            }
+            else
+            {
+                this.Master.ErrMessage = (String.Format("Table {0} and {1} does not exist. Please restart the simulation or contact an administrator.", SqlMidlandsFly.Instance.Table_Passenger.Name, SqlMidlandsFly.Instance.Table_Cargo.Name));
+            }
         }
-        else
+        catch (Exception ex)
         {
-            // Warning
+            this.Master.ErrMessage = (String.Format("An error has occured! Error message: {0}", ex.Message));
         }
     }
 

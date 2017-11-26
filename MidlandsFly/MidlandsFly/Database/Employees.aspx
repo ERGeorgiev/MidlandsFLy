@@ -1,20 +1,17 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeFile="Fleet.aspx.cs" Inherits="Homepage" %>
+﻿<%@ Page Title="Employees" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeFile="Employees.aspx.cs" Inherits="Homepage" %>
+<%@ MasterType VirtualPath="~/Site.Master" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <div class="container">
-        <header>
-            <h1>FLEET</h1>
-        </header>
 
         <article>
-            <center>
             <asp:UpdatePanel ID="UpdatePanelTable" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>
-                    <asp:Button ID="Button_PassengerTable" runat="server" OnClick="ChangeGrid_Passenger" Text="Passenger" />
-                    <asp:Button ID="Button_CargoTable" runat="server" OnClick="ChangeGrid_Cargo" Text="Cargo" />
-                    <asp:Button ID="Button_MaintenanceTable" runat="server" OnClick="ChangeGrid_Maintenance" Text="In Maintenance" />
+                    <asp:Button ID="Button_FlightDeck" runat="server" OnClick="ChangeGrid_FlightDeck" Text="Flight Deck" />
+                    <asp:Button ID="Button_CabinCrew" runat="server" OnClick="ChangeGrid_CabinCrew" Text="Cabin Crew" />
+                    <asp:Button ID="Button_GroundCrew" runat="server" OnClick="ChangeGrid_GroundCrew" Text="Ground Crew" />
 
-                    <asp:GridView ID="GridViewTable" runat="server" Style="margin-top: 0px" AllowPaging="True" AllowSorting="True" Width="687px" CellPadding="4" ForeColor="#333333" GridLines="None" PageSize="25" OnPageIndexChanging="ChangeGrid" OnSorting="ChangeGrid">
+                    <asp:GridView ID="GridViewTable" runat="server" Style="margin-top: 0px" OnRowDataBound="GridView_Align" HorizontalAlign="Center" AllowPaging="True" AllowSorting="True" Width="687px" OnPageIndexChanging="ChangeGrid" CellPadding="4" ForeColor="#333333" GridLines="None" OnSorting="ChangeGrid" PageSize="25">
                         <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
                         <EditRowStyle BackColor="#999999" />
                         <FooterStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
@@ -27,11 +24,9 @@
                         <SortedDescendingCellStyle BackColor="#FFFDF8" />
                         <SortedDescendingHeaderStyle BackColor="#6F8DAE" />
                     </asp:GridView>
-
-                    <asp:SqlDataSource ID="MidlandsFly_AircraftData" runat="server" ConnectionString="<%$ ConnectionStrings:midlandsFlyConnectionString %>" SelectCommand="SELECT * FROM [cargo_aircraft]" SelectCommandType="Text"></asp:SqlDataSource>
+                    <asp:SqlDataSource ID="MidlandsFly_Employees" runat="server" ConnectionString="<%$ ConnectionStrings:midlandsFlyConnectionString %>" SelectCommand="SELECT * FROM [employees]" SelectCommandType="Text"></asp:SqlDataSource>
                 </ContentTemplate>
             </asp:UpdatePanel>
-            </center>
         </article>
     </div>
 </asp:Content>

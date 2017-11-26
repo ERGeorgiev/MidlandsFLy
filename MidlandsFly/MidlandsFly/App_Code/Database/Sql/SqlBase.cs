@@ -17,6 +17,7 @@ namespace Database
             private List<SqlCommand> commands = new List<SqlCommand>();
 
             private string connectionString;
+            private static bool busy = false;
 
             public SqlBase(
                 string dataSource = "airlineservercovuni.database.windows.net",
@@ -48,7 +49,12 @@ namespace Database
             public List<string> Execute(byte columnNumber = 0)
             {
                 List<string> received = new List<string>();
-                
+
+                if (busy)
+                    throw new Exception("The Server is busy, please try again later.");
+                else
+                    busy = true;
+
                 try
                 {
                     using (SqlConnection connection = new SqlConnection(connectionString))
@@ -64,7 +70,7 @@ namespace Database
                         }
                         catch (Exception exBurst)
                         {
-                            throw;
+                            // Uncomment for easy debug:
                             //foreach (SqlCommand command in commands)
                             //{
                             //    command.Connection = connection;
@@ -73,35 +79,63 @@ namespace Database
                             //        received = ExecuteRead(reader, columnNumber);
                             //    }
                             //}
+                            throw;
                         }
                     }
                 }
                 catch (Exception ex)
                 {
+                    if (ex.Message == "Collection was modified; enumeration operation may not execute.")
+                    {
+                        throw new Exception("The Server is busy, please try again later.");
+                    }
                     throw;
                 }
                 finally
                 {
                     ClearCommands();
+                    busy = false;
                 }
-
+                
                 return received;
             }
 
             public List<string> Execute(SqlCommand command, byte columnNumber = 0)
             {
                 List<string> received = new List<string>();
-                
-                using (SqlConnection connection = new SqlConnection(connectionString))
+
+                if (busy)
+                    throw new Exception("The Server is busy, please try again later.");
+                else
+                    busy = true;
+
+                try
                 {
-                    command.Connection = connection;
-                    connection.Open();
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    using (SqlConnection connection = new SqlConnection(connectionString))
                     {
+                        command.Connection = connection;
+                        connection.Open();
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
                             received = ExecuteRead(reader, columnNumber);
-                            return received;
+                        }
                     }
                 }
+                catch (Exception ex)
+                {
+                    if (ex.Message == "Collection was modified; enumeration operation may not execute.")
+                    {
+                        throw new Exception("The Server is busy, please try again later.");
+                    }
+                    throw;
+                }
+                finally
+                {
+                    ClearCommands();
+                    busy = false;
+                }
+
+                return received;
             }
 
             private List<string> ExecuteRead(SqlDataReader reader, byte columnNumber = 0)

@@ -50,7 +50,7 @@ public partial class Homepage : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            this.Master.ErrMessage = (String.Format("An error has occured! Error message: {0}", ex.Message));
+            this.Master.ErrMessage = String.Format("Message: {0}", ex.Message);
         }
     }
 

@@ -88,6 +88,7 @@ public partial class SiteMaster : MasterPage
                     SqlMidlandsFly.Instance.Table_Stage))
                 {
                     Simulation.Demo();
+                    Response.Redirect(Request.Url.AbsoluteUri);
                 }
                 else
                 {
@@ -96,7 +97,7 @@ public partial class SiteMaster : MasterPage
             }
             catch (Exception ex)
             {
-                ErrMessage = String.Format("An error has occured! Error message: {0}", ex.Message);
+                ErrMessage = String.Format("Message: {0}", ex.Message);
             }
         }
     }
@@ -105,8 +106,16 @@ public partial class SiteMaster : MasterPage
     {
         if ((System.Web.HttpContext.Current.User != null) && System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
         {
-            SqlMidlandsFly.Instance.RecreateTables();
-            SqlMidlandsFly.Instance.Execute();
+            try
+            {
+                SqlMidlandsFly.Instance.RecreateTables();
+                SqlMidlandsFly.Instance.Execute();
+                Response.Redirect(Request.Url.AbsoluteUri);
+            }
+            catch (Exception ex)
+            {
+                ErrMessage = String.Format("Message: {0}", ex.Message);
+            }
         }
     }
 

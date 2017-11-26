@@ -4,7 +4,7 @@
 made for the Coventry University.*
 *The goal of the project is to create a website that can grant access to a cloud database hosted on Microsoft Azure.*
 
-![Menu](images/Fleet.png)
+![Menu](images/FLEET.png)
 
 ## Usage
 

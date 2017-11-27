@@ -24,6 +24,7 @@ Note: You may have to alter the database connection string in order to use the w
 | Visual Studio 2017|
 | Microsoft Azure	|
 | Notepad++			|
+|Microsoft Visio 2016|
 
 ## Used Languages
 
@@ -34,7 +35,7 @@ Note: You may have to alter the database connection string in order to use the w
 |JavaScript|
 |XML|
 |T-SQL|
-
+|SQL|
 ## References
 
 <to be added>

@@ -34,7 +34,7 @@ Note: You may have to alter the database connection string in order to use the w
 |JavaScript|
 |XML|
 |T-SQL|
-
+|SQL|
 ## References
 
 <to be added>

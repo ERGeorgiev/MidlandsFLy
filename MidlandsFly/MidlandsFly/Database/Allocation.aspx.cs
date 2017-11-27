@@ -56,7 +56,19 @@ public partial class Homepage : System.Web.UI.Page
 
     protected void ChangeGrid_Allocation(object sender, EventArgs e)
     {
-        command = "SELECT * FROM [" + SqlMidlandsFly.Instance.Table_Assignment.Name + "];";
+        command = String.Format("select e.{0},convert(varchar(64),DECRYPTBYPASSPHRASE('12',{1})) {1},{2},{3}",
+            Database.Enums.Parameter.id,
+            Database.Enums.Parameter.name,
+            Database.Enums.Parameter.employeeType,
+            Database.Enums.Parameter.regNumber);
+        command += String.Format(" from {0} e, {1} ehrs, {2} eloc",
+            SqlMidlandsFly.Instance.Table_Employees.Name,
+            SqlMidlandsFly.Instance.Table_FlightHours.Name,
+            SqlMidlandsFly.Instance.Table_Assignment.Name);
+        command += String.Format(" where e.{0} = ehrs.{0} AND e.{0} = eloc.{0}",
+            Database.Enums.Parameter.id);
+
+        //command = "SELECT * FROM [" + SqlMidlandsFly.Instance.Table_Assignment.Name + "];";
         ChangeGrid(sender, e);
     }
 
@@ -73,7 +85,20 @@ public partial class Homepage : System.Web.UI.Page
             && TextBox_RegNumber.Text.Length <= 6)
         {
             regNumber = TextBox_RegNumber.Text;
-            command = "SELECT * FROM [" + SqlMidlandsFly.Instance.Table_Assignment.Name + "] WHERE " + Database.Enums.Parameter.regNumber + " = '" + regNumber + "';";
+            command = String.Format("select e.{0},convert(varchar(64),DECRYPTBYPASSPHRASE('12',{1})) {1},{2},{3}",
+                Database.Enums.Parameter.id,
+                Database.Enums.Parameter.name,
+                Database.Enums.Parameter.employeeType,
+                Database.Enums.Parameter.regNumber);
+            command += String.Format(" from {0} e, {1} ehrs, {2} eloc",
+                SqlMidlandsFly.Instance.Table_Employees.Name,
+                SqlMidlandsFly.Instance.Table_FlightHours.Name,
+                SqlMidlandsFly.Instance.Table_Assignment.Name);
+            command += String.Format(" where e.{0} = ehrs.{0} AND e.{0} = eloc.{0}",
+                Database.Enums.Parameter.id);
+            command += String.Format(" AND eloc.{0} = '{1}'",
+                Database.Enums.Parameter.regNumber,
+                regNumber);
             ChangeGrid(sender, e);
         }
         else

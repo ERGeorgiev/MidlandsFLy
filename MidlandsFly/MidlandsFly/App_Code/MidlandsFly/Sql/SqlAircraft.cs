@@ -17,6 +17,7 @@ namespace MidlandsFly
         public class SqlAircraft
         {
             private static SqlAircraft instance;
+            private static Random random = new Random();
 
             public static SqlAircraft Instance
             {
@@ -27,15 +28,39 @@ namespace MidlandsFly
                     return instance;
                 }
             }
+            public void InsertCargo(byte columnNumber = 0)
+            {
+                CargoAircraft aircraft = CargoAircraft.CreateInstance();
+                aircraft.FlyHours = (uint)random.Next(0, 100000);
+                aircraft.LastMaintenance = (uint)(aircraft.FlyHours - random.Next(0, 199));
+                aircraft.Capacity_metricTonnes = (ushort)(random.Next(37, 92));
+
+                Instance.Insert(aircraft);
+            }
+            public void InsertPassenger(byte columnNumber = 0)
+            {
+                PassengerAircraft aircraft = PassengerAircraft.CreateInstance();
+                aircraft.FlyHours = (uint)random.Next(0, 50000);
+                aircraft.LastMaintenance = (uint)(aircraft.FlyHours - random.Next(0, 250));
+                aircraft.Capacity_seating = (ushort)(random.Next(4, 853));
+
+                Instance.Insert(aircraft);
+            }
             public void Insert(CargoAircraft aircraft, byte columnNumber = 0)
             {
                 SqlMidlandsFly.Instance.AddCommand(InsertCmd(aircraft));
                 SqlStage.Instance.Insert(aircraft.RegNumber);
+                SqlEmployees.Instance.Insert(EmployeeType.Cabin_Crew, aircraft, aircraft.CabinCrew);
+                SqlEmployees.Instance.Insert(EmployeeType.Flight_Deck, aircraft, aircraft.FlightCrew);
+                SqlEmployees.Instance.Insert(EmployeeType.Ground_Crew, number: aircraft.GroundCrew);
             }
             public void Insert(PassengerAircraft aircraft, byte columnNumber = 0)
             {
                 SqlMidlandsFly.Instance.AddCommand(InsertCmd(aircraft));
                 SqlStage.Instance.Insert(aircraft.RegNumber);
+                SqlEmployees.Instance.Insert(EmployeeType.Cabin_Crew, aircraft, aircraft.CabinCrew);
+                SqlEmployees.Instance.Insert(EmployeeType.Flight_Deck, aircraft, aircraft.FlightCrew);
+                SqlEmployees.Instance.Insert(EmployeeType.Ground_Crew, number: aircraft.GroundCrew);
             }
             public SqlCommand InsertCmd(CargoAircraft aircraft)
             {

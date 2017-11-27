@@ -83,6 +83,14 @@ namespace Database
                         }
                     }
                 }
+                catch (SqlException ex)
+                {
+                    if (ex.Number == ErrorCode.NoConnectionA || ex.Number == ErrorCode.NoConnectionB)
+                    {
+                        throw new Exception("No connection with the database. Please try again or contact the administrator.");
+                    }
+                    throw;
+                }
                 catch (Exception ex)
                 {
                     if (ex.Message == "Collection was modified; enumeration operation may not execute.")
@@ -120,6 +128,14 @@ namespace Database
                             received = ExecuteRead(reader, columnNumber);
                         }
                     }
+                }
+                catch (SqlException ex)
+                {
+                    if (ex.Number == ErrorCode.NoConnectionA || ex.Number == ErrorCode.NoConnectionB)
+                    {
+                        throw new Exception("No connection with the database. Please try again or contact the administrator.");
+                    }
+                    throw;
                 }
                 catch (Exception ex)
                 {

@@ -54,19 +54,41 @@ public partial class Homepage : System.Web.UI.Page
 
     protected void ChangeGrid_FlightDeck(object sender, EventArgs e)
     {
-        command = "SELECT " + Database.Enums.Parameter.id + ",convert(varchar(64),DECRYPTBYPASSPHRASE('12'," + Database.Enums.Parameter.name + ")) AS " + Database.Enums.Parameter.name + "," + Database.Enums.Parameter.employeeType + " FROM [" + SqlMidlandsFly.Instance.Table_Employees.Name + "] WHERE " + Database.Enums.Parameter.employeeType + " = 'Flight_Deck';";
+        command = String.Format("select e.{0},convert(varchar(64),DECRYPTBYPASSPHRASE('12',{1})) {1},{2},{3}",
+            Database.Enums.Parameter.id,
+            Database.Enums.Parameter.name,
+            Database.Enums.Parameter.employeeType,
+            Database.Enums.Parameter.flyHours);
+        command += String.Format(" from {0} e, {1} ehrs",
+            SqlMidlandsFly.Instance.Table_Employees.Name,
+            SqlMidlandsFly.Instance.Table_FlightHours.Name);
+        command += String.Format(" where e.{0} = ehrs.{0}",
+            Database.Enums.Parameter.id);
+        command += String.Format(" AND e.{0} = 'Flight_Deck'",
+            Database.Enums.Parameter.employeeType);
         ChangeGrid(sender, e);
     }
 
     protected void ChangeGrid_CabinCrew(object sender, EventArgs e)
     {
-        command = "SELECT " + Database.Enums.Parameter.id + ",convert(varchar(64),DECRYPTBYPASSPHRASE('12'," + Database.Enums.Parameter.name + ")) AS " + Database.Enums.Parameter.name + "," + Database.Enums.Parameter.employeeType + " FROM [" + SqlMidlandsFly.Instance.Table_Employees.Name + "] WHERE " + Database.Enums.Parameter.employeeType + " = 'Cabin_Crew';";
+        command = String.Format("select e.{0},convert(varchar(64),DECRYPTBYPASSPHRASE('12',{1})) {1},{2},{3}",
+            Database.Enums.Parameter.id,
+            Database.Enums.Parameter.name,
+            Database.Enums.Parameter.employeeType,
+            Database.Enums.Parameter.flyHours);
+        command += String.Format(" from {0} e, {1} ehrs",
+            SqlMidlandsFly.Instance.Table_Employees.Name,
+            SqlMidlandsFly.Instance.Table_FlightHours.Name);
+        command += String.Format(" where e.{0} = ehrs.{0}",
+            Database.Enums.Parameter.id);
+        command += String.Format(" AND e.{0} = 'Cabin_Crew'",
+            Database.Enums.Parameter.employeeType);
         ChangeGrid(sender, e);
     }
 
     protected void ChangeGrid_GroundCrew(object sender, EventArgs e)
     {
-        command = "SELECT " + Database.Enums.Parameter.id + ",convert(varchar(64),DECRYPTBYPASSPHRASE('12'," + Database.Enums.Parameter.name + ")) AS "  +Database.Enums.Parameter.name + "," + Database.Enums.Parameter.employeeType + " FROM [" + SqlMidlandsFly.Instance.Table_Employees.Name + "] WHERE " + Database.Enums.Parameter.employeeType + " = 'Ground_Crew';";
+        command = "SELECT " + Database.Enums.Parameter.id + ",convert(varchar(64),DECRYPTBYPASSPHRASE('12'," + Database.Enums.Parameter.name + ")) AS " + Database.Enums.Parameter.name + "," + Database.Enums.Parameter.employeeType + " FROM [" + SqlMidlandsFly.Instance.Table_Employees.Name + "] WHERE " + Database.Enums.Parameter.employeeType + " = 'Ground_Crew';";
         ChangeGrid(sender, e);
     }
 }

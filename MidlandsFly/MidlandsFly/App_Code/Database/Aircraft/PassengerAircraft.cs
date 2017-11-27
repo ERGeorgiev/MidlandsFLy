@@ -21,6 +21,9 @@ public class PassengerAircraft : Aircraft
     {
         RegNumber_end = regNumber;
         this.Capacity_seating = capacity_seating;
+        this.FlightCrew = 2;
+        this.CabinCrew = 3;
+        this.GroundCrew = 5;
     }
 
     // CreateInstance method is used for instanstiating instead of the default constructor in order

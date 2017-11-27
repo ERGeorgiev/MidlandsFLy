@@ -27,35 +27,38 @@ namespace MidlandsFly
                     return instance;
                 }
             }
-            // TODO: Do more researach on <T> and obj, maybe this code can be improved.
             public void Insert(CargoAircraft aircraft, byte columnNumber = 0)
             {
                 SqlMidlandsFly.Instance.AddCommand(InsertCmd(aircraft));
+                SqlStage.Instance.Insert(aircraft.RegNumber);
             }
             public void Insert(PassengerAircraft aircraft, byte columnNumber = 0)
             {
                 SqlMidlandsFly.Instance.AddCommand(InsertCmd(aircraft));
+                SqlStage.Instance.Insert(aircraft.RegNumber);
             }
             public SqlCommand InsertCmd(CargoAircraft aircraft)
             {
                 string text;
-                text = String.Format("INSERT INTO {0} VALUES('{1}',{2},{3},{4});",
+                text = String.Format("INSERT INTO {0} VALUES('{1}',{2},{3},{4},{5});",
                     SqlMidlandsFly.Instance.Table_Cargo.Name,
                     aircraft.RegNumber,
                     aircraft.FlyHours,
                     aircraft.LastMaintenance,
-                    aircraft.Capacity_metricTonnes);
+                    aircraft.Capacity_metricTonnes,
+                     "SYSDATETIME()");
                 return new SqlCommand(text);
             }
             public SqlCommand InsertCmd(PassengerAircraft aircraft)
             {
                 string text;
-                text = String.Format("INSERT INTO {0} VALUES('{1}',{2},{3},{4});",
+                text = String.Format("INSERT INTO {0} VALUES('{1}',{2},{3},{4},{5});",
                     SqlMidlandsFly.Instance.Table_Passenger.Name,
                     aircraft.RegNumber,
                     aircraft.FlyHours,
                     aircraft.LastMaintenance,
-                    aircraft.Capacity_seating);
+                    aircraft.Capacity_seating,
+                     "SYSDATETIME()");
                 return new SqlCommand(text);
             }
         }

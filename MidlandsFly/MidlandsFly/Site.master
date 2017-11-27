@@ -5,6 +5,9 @@
 <html lang="en">
 <head runat="server">
     <style type="text/css">
+        .colHeader-RightAlign {
+            text-align:right !important;
+        }
         div.container {
             width: 100%;
             border: 1px solid gray;
@@ -36,15 +39,27 @@
                 }
 
         article {
-            margin-left: 250px;
+            text-align: center;
+            display: inherit;
+            float: none !important;
+            margin-left: auto;
+            margin-right: auto;
             border-left: 1px solid gray;
             padding: 1em;
             overflow: hidden;
         }
+
+        text-danger centered {
+            text-align: center;
+            display: inherit;
+            margin-left: auto;
+            margin-right: auto;
+            float: none !important;
+        }
     </style>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%: Page.Title %> - My ASP.NET Application</title>
+    <title><%: Page.Title %> - Midlands Fly Database</title>
 
     <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/bundles/modernizr") %>
@@ -75,6 +90,13 @@
             </Scripts>
         </asp:ScriptManager>
 
+        <header>
+            <h1><%: Page.Title %>            </h1>
+        <p class="text-danger centered">
+            <asp:Literal runat="server" ID="ErrorMessage" />
+        </p>
+            </header>
+
         <div class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
@@ -98,10 +120,22 @@
                         </AnonymousTemplate>
                         <LoggedInTemplate>
                             <ul class="nav navbar-nav">
-                                <li><a runat="server" href="~/Fleet">Fleet</a></li>
-                                <li><a runat="server" href="~/Employees">Employees</a></li>
+                                <li><a runat="server" href="~/Database/Fleet">Fleet</a></li>
+                                <li><a runat="server" href="~/Database/Employees">Employees</a></li>
+                                <li><a runat="server" href="~/Database/History">History</a></li>
+                                <li><a runat="server" href="~/Database/Allocation">Allocation</a></li>
                             </ul>
                             <ul class="nav navbar-nav navbar-right">
+                                <li class="k-dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                        <asp:Literal runat="server" Text="Simulation" /><span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><asp:LinkButton id="Button_NewSimulation" runat="server" OnClick="AddRecords" Text="Add Records"/></li>
+                                        <li><asp:LinkButton id="Button_ClearTables" runat="server" OnClick="ClearTables" Text="Reset"/></li>
+                                        <li><asp:LinkButton id="Button_AddHours_24" runat="server" OnClick="AddHours_24" Text="Add 24 Hours"/></li>
+                                        <li><asp:LinkButton id="Button_AddHours_100" runat="server" OnClick="AddHours_100" Text="Add 100 Hours"/></li>
+                                    </ul>
+                                </li>
                                 <li><a runat="server" href="~/Account/Manage" title="Manage your account">Hello, <%: Context.User.Identity.GetUserName()  %>!</a></li>
                                 <li>
                                     <asp:LoginStatus runat="server" LogoutAction="Redirect" LogoutText="Log off" LogoutPageUrl="~/" OnLoggingOut="Unnamed_LoggingOut" />

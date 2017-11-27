@@ -22,6 +22,7 @@ namespace MidlandsFly
             public SqlTable Table_Assignment;
             public SqlTable Table_MaintenanceHistory;
             public SqlTable Table_Maintenance;
+            public SqlTable Table_Stage;
 
             // Implementing Singleton for accessing the class using a static variable.
             // With a Singleton the programmer doesn't need to declare the class variable,
@@ -50,75 +51,99 @@ namespace MidlandsFly
             #region Initialize Tables
             public void InitTables()
             {
-                Table_Cargo = new SqlTable("Cargo_Aircraft",
+                Table_Cargo = new SqlTable(
+                    "Cargo_Aircraft",
                     new SqlParameter(Parameter.regNumber, System.Data.SqlDbType.VarChar, Aircraft.RegNumber_symbolCount),
                     new SqlParameter(Parameter.flyHours, System.Data.SqlDbType.Int),
                     new SqlParameter(Parameter.lastMaintenance, System.Data.SqlDbType.Int),
-                    new SqlParameter(Parameter.capacity_mTonnes, System.Data.SqlDbType.Int));
-                Table_Passenger = new SqlTable("Passenger_Aircraft",
+                    new SqlParameter(Parameter.capacity_mTonnes, System.Data.SqlDbType.Int),
+                    new SqlParameter(Parameter.last_update, System.Data.SqlDbType.DateTime));
+                Table_Passenger = new SqlTable(
+                    "Passenger_Aircraft",
                     new SqlParameter(Parameter.regNumber, System.Data.SqlDbType.VarChar, Aircraft.RegNumber_symbolCount),
                     new SqlParameter(Parameter.flyHours, System.Data.SqlDbType.Int),
                     new SqlParameter(Parameter.lastMaintenance, System.Data.SqlDbType.Int),
-                    new SqlParameter(Parameter.capacity_seating, System.Data.SqlDbType.Int));
-                Table_Employees = new SqlTable("Employees",
+                    new SqlParameter(Parameter.capacity_seating, System.Data.SqlDbType.Int),
+                    new SqlParameter(Parameter.last_update, System.Data.SqlDbType.DateTime));
+                Table_Employees = new SqlTable(
+                    "Employees",
                     new SqlParameter(Parameter.id, System.Data.SqlDbType.VarChar, Employee.IdLength),
-                    new SqlParameter(Parameter.name, System.Data.SqlDbType.VarChar, Employee.name_length),
+                    new SqlParameter(Parameter.name, System.Data.SqlDbType.VarBinary, 64), //TODO: Explain why 64 -> https://dba.stackexchange.com/questions/120929/how-long-is-the-output-of-encryptbypassphrase-relative-to-the-input
                     new SqlParameter(Parameter.employeeType, System.Data.SqlDbType.VarChar, Employee.employeeType_length));
-                Table_FlightHours = new SqlTable("Employees_FlightHours",
+                Table_FlightHours = new SqlTable(
+                    "Employees_FlightHours",
                     new SqlParameter(Parameter.id, System.Data.SqlDbType.VarChar, Employee.IdLength),
                     new SqlParameter(Parameter.flyHours, System.Data.SqlDbType.Int));
-                Table_Assignment = new SqlTable("Employees_Assignment",
+                Table_Assignment = new SqlTable(
+                    "Employees_Assignment",
                     new SqlParameter(Parameter.id, System.Data.SqlDbType.VarChar, Employee.IdLength),
                     new SqlParameter(Parameter.regNumber, System.Data.SqlDbType.VarChar, Aircraft.RegNumber_symbolCount));
-                Table_MaintenanceHistory = new SqlTable("MaintenanceHistory",
+                Table_MaintenanceHistory = new SqlTable(
+                    "MaintenanceHistory",
                     new SqlParameter(Parameter.regNumber, System.Data.SqlDbType.VarChar, Aircraft.RegNumber_symbolCount),
                     new SqlParameter(Parameter.id, System.Data.SqlDbType.VarChar, Employee.IdLength),
                     new SqlParameter(Parameter.description, System.Data.SqlDbType.VarChar, MaintenanceHistory.description_length));
-                Table_Maintenance = new SqlTable("Maintenance",
+                Table_Maintenance = new SqlTable(
+                    "Maintenance",
                     new SqlParameter(Parameter.regNumber, System.Data.SqlDbType.VarChar, Aircraft.RegNumber_symbolCount),
-                    new SqlParameter(Parameter.lastMaintenance_date, System.Data.SqlDbType.DateTime));
+                    new SqlParameter(Parameter.maintenance_hour, System.Data.SqlDbType.Int));
+                Table_Stage = new SqlTable(
+                    "Stage",
+                    new SqlParameter(Parameter.regNumber, System.Data.SqlDbType.VarChar, Aircraft.RegNumber_symbolCount),
+                    new SqlParameter(Parameter.stage, System.Data.SqlDbType.Int),
+                    new SqlParameter(Parameter.stage_hour, System.Data.SqlDbType.Int),
+                    new SqlParameter(Parameter.stage_date, System.Data.SqlDbType.DateTime),
+                    new SqlParameter(Parameter.flight_duration, System.Data.SqlDbType.Int));
             }
             #endregion
 
             public void CreateTables()
             {
-                Instance.CreateTable(Table_Cargo);
-                Instance.CreateTable(Table_Passenger);
-                Instance.CreateTable(Table_Employees);
-                Instance.CreateTable(Table_FlightHours);
-                Instance.CreateTable(Table_Assignment);
-                Instance.CreateTable(Table_MaintenanceHistory);
-                Instance.CreateTable(Table_Maintenance);
+                Instance.CreateTable(
+                    Table_Cargo,
+                    Table_Passenger,
+                    Table_Employees,
+                    Table_FlightHours,
+                    Table_Assignment,
+                    Table_MaintenanceHistory,
+                    Table_Maintenance,
+                    Table_Stage);
             }
             public void ClearTables()
             {
-                Instance.ResetTable(Table_Cargo);
-                Instance.ResetTable(Table_Passenger);
-                Instance.ResetTable(Table_Employees);
-                Instance.ResetTable(Table_FlightHours);
-                Instance.ResetTable(Table_Assignment);
-                Instance.ResetTable(Table_MaintenanceHistory);
-                Instance.ResetTable(Table_Maintenance);
+                Instance.ResetTable(
+                    Table_Cargo,
+                    Table_Passenger,
+                    Table_Employees,
+                    Table_FlightHours,
+                    Table_Assignment,
+                    Table_MaintenanceHistory,
+                    Table_Maintenance,
+                    Table_Stage);
             }
             public void DropTables()
             {
-                Instance.DropTable(Table_Cargo);
-                Instance.DropTable(Table_Passenger);
-                Instance.DropTable(Table_Employees);
-                Instance.DropTable(Table_FlightHours);
-                Instance.DropTable(Table_Assignment);
-                Instance.DropTable(Table_MaintenanceHistory);
-                Instance.DropTable(Table_Maintenance);
+                Instance.DropTable(
+                    Table_Cargo,
+                    Table_Passenger,
+                    Table_Employees,
+                    Table_FlightHours,
+                    Table_Assignment,
+                    Table_MaintenanceHistory,
+                    Table_Maintenance,
+                    Table_Stage);
             }
             public void RecreateTables()
             {
-                Instance.RecreateTable(Table_Cargo);
-                Instance.RecreateTable(Table_Passenger);
-                Instance.RecreateTable(Table_Employees);
-                Instance.RecreateTable(Table_FlightHours);
-                Instance.RecreateTable(Table_Assignment);
-                Instance.RecreateTable(Table_MaintenanceHistory);
-                Instance.RecreateTable(Table_Maintenance);
+                Instance.RecreateTable(
+                    Table_Cargo,
+                    Table_Passenger,
+                    Table_Employees,
+                    Table_FlightHours,
+                    Table_Assignment,
+                    Table_MaintenanceHistory,
+                    Table_Maintenance,
+                    Table_Stage);
             }
 
             public void AddHours(uint hours, string regNumber)

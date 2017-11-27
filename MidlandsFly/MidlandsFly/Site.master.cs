@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Security.Claims;
-using System.Security.Principal;
+﻿using MidlandsFly;
+using MidlandsFly.Sql;
+using System;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
@@ -66,11 +65,89 @@ public partial class SiteMaster : MasterPage
 
     protected void Page_Load(object sender, EventArgs e)
     {
-
     }
 
     protected void Unnamed_LoggingOut(object sender, LoginCancelEventArgs e)
     {
         Context.GetOwinContext().Authentication.SignOut();
     }
+
+    protected void AddRecords(object sender, EventArgs e)
+    {
+        if ((System.Web.HttpContext.Current.User != null) && System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
+        {
+            try
+            {
+                if (SqlMidlandsFly.Instance.TableExists(
+                    SqlMidlandsFly.Instance.Table_Passenger,
+                    SqlMidlandsFly.Instance.Table_Cargo,
+                    SqlMidlandsFly.Instance.Table_Employees,
+                    SqlMidlandsFly.Instance.Table_Assignment,
+                    SqlMidlandsFly.Instance.Table_Maintenance,
+                    SqlMidlandsFly.Instance.Table_MaintenanceHistory,
+                    SqlMidlandsFly.Instance.Table_Stage))
+                {
+                    Simulation.Demo();
+                    Response.Redirect(Request.Url.AbsoluteUri);
+                }
+                else
+                {
+                    ErrMessage = String.Format("Table {0} does not exist. Please restart the simulation or contact an administrator.", SqlMidlandsFly.Instance.Table_Employees.Name);
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrMessage = String.Format("Message: {0}", ex.Message);
+            }
+        }
+    }
+
+    protected void ClearTables(object sender, EventArgs e)
+    {
+        if ((System.Web.HttpContext.Current.User != null) && System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
+        {
+            try
+            {
+                SqlMidlandsFly.Instance.RecreateTables();
+                SqlMidlandsFly.Instance.Execute();
+                Response.Redirect(Request.Url.AbsoluteUri);
+            }
+            catch (Exception ex)
+            {
+                ErrMessage = String.Format("Message: {0}", ex.Message);
+            }
+        }
+    }
+
+    protected void AddHours_24(object sender, EventArgs e)
+    {
+        if ((System.Web.HttpContext.Current.User != null) && System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
+        {
+        }
+    }
+
+    protected void AddHours_100(object sender, EventArgs e)
+    {
+        if ((System.Web.HttpContext.Current.User != null) && System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
+        {
+        }
+    }
+
+    public string ErrMessage
+    {
+        get
+        {
+            return ErrorMessage.Text;
+        }
+        set
+        {
+            ErrorMessage.Text = value;
+        }
+    }
+
+    //protected void AddHoursToPlane(object sender, EventArgs e)
+    //{
+    //    SqlMidlandsFly.Instance.AddHours((uint)Int32.Parse(TextBox_AddHoursToPlane_Hours.Text), TextBox_AddHoursToPlane_RegNumber.Text);
+    //    SqlMidlandsFly.Instance.Execute();
+    //}
 }

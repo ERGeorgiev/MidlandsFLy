@@ -64,17 +64,21 @@ namespace MidlandsFly
                         SqlMidlandsFly.Instance.Table_FlightHours.Name,
                         MathExt.IntToFixedString((int)employee.Id, Employee.IdLength),
                         hours);
+                    text += String.Format("INSERT INTO {0} VALUES('{1}','{2}');",
+                        SqlMidlandsFly.Instance.Table_Assignment.Name,
+                        MathExt.IntToFixedString((int)employee.Id, Employee.IdLength),
+                        regNumber);
                 }
-                text += String.Format("INSERT INTO {0} VALUES('{1}','{2}');",
-                    SqlMidlandsFly.Instance.Table_Assignment.Name,
-                    MathExt.IntToFixedString((int)employee.Id, Employee.IdLength),
-                    regNumber);
                 if (employee.EmployeeType == EmployeeType.Ground_Crew)
                 {
                     for (int m = 0; m <= random.Next(1, 3); m++)
                     {
                         Instance.AddMaintenance(employee.Id, MaintenanceHistory.GenerateRandomDescription(), regNumber);
                     }
+                    text += String.Format("INSERT INTO {0} VALUES('{1}','{2}');",
+                        SqlMidlandsFly.Instance.Table_Assignment.Name,
+                        MathExt.IntToFixedString((int)employee.Id, Employee.IdLength),
+                        notAssignedText);
                 }
                 return new SqlCommand(text);
             }

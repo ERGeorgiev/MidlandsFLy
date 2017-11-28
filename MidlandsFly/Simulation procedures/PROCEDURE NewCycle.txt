@@ -1,0 +1,133 @@
+CREATE PROCEDURE NewCycle @hours int, @regNumber varchar(6)
+as
+DECLARE 
+@duration_fly int = (SELECT FLOOR(RAND()*(18-1)+1)),
+@duration_prep int = 1,
+@maint_begin int,
+@maint_end int,
+-- Airplanes go through 4 stages: Preparation, Flying, Preparation, Flying.
+@stage int,
+@flyHours int,
+@mini_target int,
+@duration int,
+@duration_cycle int,
+-- A full cycle starts with a preparation and ends with either a maintenance or a flying stage.
+@fullCycles int,
+-- Maintenance hours left from the current cycle.
+@maint_curr int = 200 - (select (FLYING_HOURS-LAST_MAINTENANCE) from cargo_aircraft
+                         where AIRCRAFT_NUMBER= @regNumber
+                         union
+                         select (FLYING_HOURS-LAST_MAINTENANCE) from passenger_aircraft
+                         where AIRCRAFT_NUMBER= @regNumber);
+set @duration = @duration_fly + @duration_prep;
+set @duration_cycle  = 24+2*@duration*CEILING(200/(2*@duration));
+
+begin
+
+update stage
+set Flight_Duration = @duration_fly
+where Aircraft_Number = @regNumber;
+
+-- Calculating maintenance begin and end for the current maintenance settings
+set @maint_begin = @duration*CEILING(@maint_curr/@duration)
+set @maint_end = @maint_begin + 24	
+
+IF (@maint_curr > 0)
+begin
+	set @duration_cycle = @maint_end + @duration_cycle
+	
+	declare @total int;
+	set @total= @hours - @maint_begin;
+	IF (@hours < @maint_end) AND (@hours >= @maint_begin) 
+	begin
+	    
+	    insert into maintenance values (@regNumber,@total);
+		exec db_assign_groundCrew @regNumber, 5;
+		set @hours = @maint_begin
+    end
+	ELSE IF (@hours >= @maint_end)
+	begin
+		set @hours = @hours - 24
+		update Cargo_Aircraft
+		set Last_Maintenance = Flying_Hours + @maint_end
+		where Aircraft_Number = @regNumber;
+		update Passenger_Aircraft
+		set Last_Maintenance = Flying_Hours + @maint_end
+		where Aircraft_Number = @regNumber;
+    end 
+end
+
+set @fullCycles = floor(@hours/@duration_cycle)
+-- Substracting the total maintenance time for all the full cycles from the total number of @hours.
+set @hours = @hours - @fullCycles*24
+
+-- Calculating the maintenance in the final cycle.
+set @maint_begin = @maint_end + @duration*CEILING(200/@duration)
+set @maint_begin = @maint_begin + (@fullCycles * @duration_cycle)
+set @maint_end = @maint_begin + 24
+
+IF (@maint_begin <= @hours) AND (@hours < @maint_end)
+begin
+	set @total= @hours - @maint_begin;
+	insert into maintenance values (@regNumber,@total);
+	exec db_assign_groundCrew @regNumber, 5;
+	set @hours = @maint_begin
+end
+ELSE IF (@hours >= @maint_end)
+begin
+	set @hours = @hours - 24
+	update Cargo_Aircraft
+	set Last_Maintenance = Flying_Hours + @maint_end
+	where Aircraft_Number = @regNumber;
+	update Passenger_Aircraft
+	set Last_Maintenance = Flying_Hours + @maint_end
+	where Aircraft_Number = @regNumber;
+end
+
+-- Calculating how many of @hours were spent flying.
+set @flyHours = floor(@hours/@duration)*@duration_fly;
+-- @mini_target represents the hours passed into the current 2 stages (Preparation and Flying).
+set @mini_target = ((@hours%@duration_cycle)%@duration);
+
+IF (@mini_target > @duration_prep)
+begin
+	set @mini_target = @mini_target - @duration_prep;
+	set @flyHours = @flyHours + @mini_target;
+end
+update Cargo_Aircraft
+set Flying_Hours = Flying_Hours + @flyHours
+where Aircraft_Number = @regNumber;
+update Passenger_Aircraft
+set Flying_Hours = Flying_Hours + @flyHours
+where Aircraft_Number = @regNumber;
+
+set @hours = ((@hours%@duration_cycle)%(@duration*2));
+
+IF (0 <= @hours) AND (@hours < @duration_prep)
+begin 
+	set @stage = 0;
+	set @hours = (@hours%@duration_prep)
+end
+ELSE IF (@hours < @duration)
+begin
+	set @stage = 1;
+	set @hours = (@hours%@duration_fly)
+end
+ELSE IF (@hours < (@duration + @duration_prep))
+begin
+	set @stage = 2;
+	set @hours = (@hours%@duration_prep)
+end
+ELSE IF (@hours < (@duration*2))
+begin
+	set @stage = 3;
+	set @hours = (@hours%@duration_fly)
+end
+update stage 
+set Stage = @stage
+where AIRCRAFT_NUMBER= @regNumber;
+update stage 
+set Stage_Hour = @hours
+where AIRCRAFT_NUMBER= @regNumber;
+
+end

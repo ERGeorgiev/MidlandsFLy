@@ -52,7 +52,7 @@ namespace MidlandsFly
                 SqlStage.Instance.Insert(aircraft.RegNumber);
                 SqlEmployees.Instance.Insert(EmployeeType.Cabin_Crew, aircraft, aircraft.CabinCrew);
                 SqlEmployees.Instance.Insert(EmployeeType.Flight_Deck, aircraft, aircraft.FlightCrew);
-                SqlEmployees.Instance.Insert(EmployeeType.Ground_Crew, number: aircraft.GroundCrew);
+                SqlEmployees.Instance.Insert(EmployeeType.Ground_Crew, aircraft, number: aircraft.GroundCrew);
             }
             public void Insert(PassengerAircraft aircraft, byte columnNumber = 0)
             {
@@ -60,7 +60,7 @@ namespace MidlandsFly
                 SqlStage.Instance.Insert(aircraft.RegNumber);
                 SqlEmployees.Instance.Insert(EmployeeType.Cabin_Crew, aircraft, aircraft.CabinCrew);
                 SqlEmployees.Instance.Insert(EmployeeType.Flight_Deck, aircraft, aircraft.FlightCrew);
-                SqlEmployees.Instance.Insert(EmployeeType.Ground_Crew, number: aircraft.GroundCrew);
+                SqlEmployees.Instance.Insert(EmployeeType.Ground_Crew, aircraft, number: aircraft.GroundCrew);
             }
             public SqlCommand InsertCmd(CargoAircraft aircraft)
             {

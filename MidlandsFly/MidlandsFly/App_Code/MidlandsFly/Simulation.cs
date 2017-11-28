@@ -40,12 +40,6 @@ namespace MidlandsFly
                     SqlAircraft.Instance.InsertPassenger();
                 }
                 sql.Execute();
-                List<string> PlanesThatNeedMaintenance = SqlMaintenance.Instance.GetPlanesThatNeedMaintenance();
-                foreach (string plane in PlanesThatNeedMaintenance)
-                {
-                    SqlMaintenance.Instance.Insert(plane);
-                }
-                sql.Execute();
 
                 #endregion Add Airplanes
         }

@@ -6,8 +6,16 @@
         <article>
             <asp:UpdatePanel ID="UpdatePanelTable" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>
-                    <asp:Button ID="Button_Maintenance" runat="server" OnClick="ChangeGrid_Maintenance" Text="Maintenance" />
+                    Plane Registration Number:
+                    <asp:TextBox ID="TextBox_RegNumber" runat="server" Width="74px"></asp:TextBox>
+                    &nbsp;<asp:Button ID="Button_Filter" runat="server" OnClick="Filter" Text="Filter" />
+                    &nbsp;<asp:Button ID="Button_FilterReset" runat="server" OnClick="FilterReset" Text="Reset" />
+                                        <br />
+                    <asp:RegularExpressionValidator CssClass="text-danger" Display="Dynamic" ID="RegularExpressionValidator1" runat="server" ErrorMessage="Only 3 numbers and 3 letters are allowed. (Ex. AAA111)" ValidationExpression="^[a-zA-Z]{3}\d{3}$" ControlToValidate="TextBox_RegNumber"></asp:RegularExpressionValidator>                    
 
+                    <br />
+                    <asp:Button ID="Button_Maintenance" runat="server" OnClick="ChangeGrid_Maintenance" Text="Maintenance" />
+                    <br />
                     <asp:GridView ID="GridViewTable" runat="server" Style="margin-top: 0px" OnRowDataBound="GridView_Align" HorizontalAlign="Center" AllowPaging="True" AllowSorting="True" Width="687px" CellPadding="4" ForeColor="#333333" GridLines="None" OnPageIndexChanging="ChangeGrid" OnSorting="ChangeGrid" PageSize="25">
                         <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
                         <EditRowStyle BackColor="#999999" />

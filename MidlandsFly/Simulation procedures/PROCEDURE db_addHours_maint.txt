@@ -1,11 +1,11 @@
-create PROCEDURE db_addHours_maint @hours int, @regNumber varchar(6)
+CREATE PROCEDURE db_addHours_maint @hours int, @regNumber varchar(6)
 as
 DECLARE 
 @maint_time int = 24,
 @maint_hour varchar(6) = (select MAINTENANCE_HOUR from maintenance where aircraft_number=@regNumber) ;
 set @hours = @hours - (@maint_time - @maint_hour)
 	begin
-    IF (@hours <= 0)
+    IF (@hours < 0)
 	begin
 	
 		update maintenance
@@ -13,10 +13,14 @@ set @hours = @hours - (@maint_time - @maint_hour)
         where aircraft_number=@regNumber;
 		return 0;
 	end
-	ELSE
-	
+	ELSE	
 		delete from Maintenance where AIRCRAFT_NUMBER=@regNumber
+		exec db_unassign_groundCrew @regNumber;
+		update Cargo_Aircraft
+		set Last_Maintenance = Flying_Hours
+		where Aircraft_Number = @regNumber;
+		update Passenger_Aircraft
+		set Last_Maintenance = Flying_Hours
+		where Aircraft_Number = @regNumber;
 		return @hours;
 	end
-
-    

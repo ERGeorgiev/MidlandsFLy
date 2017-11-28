@@ -61,11 +61,10 @@ public partial class Homepage : System.Web.UI.Page
             Database.Enums.Parameter.name,
             Database.Enums.Parameter.employeeType,
             Database.Enums.Parameter.regNumber);
-        command += String.Format(" from {0} e, {1} ehrs, {2} eloc",
+        command += String.Format(" from {0} e, {1} eloc",
             SqlMidlandsFly.Instance.Table_Employees.Name,
-            SqlMidlandsFly.Instance.Table_FlightHours.Name,
             SqlMidlandsFly.Instance.Table_Assignment.Name);
-        command += String.Format(" where e.{0} = ehrs.{0} AND e.{0} = eloc.{0}",
+        command += String.Format(" where e.{0} = eloc.{0}",
             Database.Enums.Parameter.id);
 
         //command = "SELECT * FROM [" + SqlMidlandsFly.Instance.Table_Assignment.Name + "];";
@@ -90,11 +89,10 @@ public partial class Homepage : System.Web.UI.Page
                 Database.Enums.Parameter.name,
                 Database.Enums.Parameter.employeeType,
                 Database.Enums.Parameter.regNumber);
-            command += String.Format(" from {0} e, {1} ehrs, {2} eloc",
+            command += String.Format(" from {0} e, {1} eloc",
                 SqlMidlandsFly.Instance.Table_Employees.Name,
-                SqlMidlandsFly.Instance.Table_FlightHours.Name,
                 SqlMidlandsFly.Instance.Table_Assignment.Name);
-            command += String.Format(" where e.{0} = ehrs.{0} AND e.{0} = eloc.{0}",
+            command += String.Format(" where e.{0} = eloc.{0}",
                 Database.Enums.Parameter.id);
             command += String.Format(" AND eloc.{0} = '{1}'",
                 Database.Enums.Parameter.regNumber,

@@ -4,6 +4,12 @@ using System.Linq;
 using System.Collections.Generic;
 using Database.Enums;
 using Database.Sql;
+using System.IO;
+using System.Data;
+using System.Configuration;
+using System.Data.SqlClient;
+using System.Xml;
+using System.Web;
 
 /// <summary>
 /// MidlandsFly SqlBase class for communication.
@@ -23,6 +29,7 @@ namespace MidlandsFly
             public SqlTable Table_MaintenanceHistory;
             public SqlTable Table_Maintenance;
             public SqlTable Table_Stage;
+            public SqlTable Table_MaintenanceHistoryDescription;
 
             // Implementing Singleton for accessing the class using a static variable.
             // With a Singleton the programmer doesn't need to declare the class variable,

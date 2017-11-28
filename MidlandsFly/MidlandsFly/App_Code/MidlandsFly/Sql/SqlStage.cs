@@ -17,6 +17,7 @@ namespace MidlandsFly
         public class SqlStage
         {
             private static SqlStage instance;
+            private static Random random = new Random();
 
             public static SqlStage Instance
             {
@@ -40,7 +41,7 @@ namespace MidlandsFly
                     0,
                     0,
                     "SYSDATETIME()",
-                    8);
+                    random.Next(1,18));
                 return new SqlCommand(text);
             }
         }

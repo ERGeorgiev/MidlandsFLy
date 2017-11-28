@@ -16,6 +16,8 @@ namespace Database
             public static int InvalidName = 208;
             public static int TableDoesNotExist = 3701;
             public static int Duplicate = 2627;
+            public static int NoConnectionA = 0;
+            public static int NoConnectionB = 40;
         }
     }
 }

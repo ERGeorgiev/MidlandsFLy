@@ -17,7 +17,8 @@ namespace MidlandsFly
         public class SqlEmployees
         {
             private static SqlEmployees instance;
-            private static string notAssignedText = "N/A";
+            private const string notAssignedText = "N/A";
+            private static Random random = new Random();
 
             public static SqlEmployees Instance
             {
@@ -28,13 +29,28 @@ namespace MidlandsFly
                     return instance;
                 }
             }
-
-            public void Insert(Employee employee, string regNumber, byte columnNumber = 0)
+            public void Insert(EmployeeType type, Aircraft aircraft = null, byte number = 1, byte columnNumber = 0)
             {
-                SqlMidlandsFly.Instance.AddCommand(InsertCmd(employee, regNumber));
+                for (int i = 0; i < number; i++)
+                {
+                    Employee employee = Employee.CreateInstance(type);
+                    Instance.Insert(employee, aircraft);
+                }
             }
-            public SqlCommand InsertCmd(Employee employee, string regNumber)
+            public void Insert(Employee employee, Aircraft aircraft = null, byte columnNumber = 0)
             {
+                SqlMidlandsFly.Instance.AddCommand(InsertCmd(employee, aircraft));
+            }
+            public SqlCommand InsertCmd(Employee employee, Aircraft aircraft = null)
+            {
+                string regNumber = notAssignedText;
+                int hours = 0;
+                if (aircraft != null)
+                {
+                    regNumber = aircraft.RegNumber;
+                    hours = (int)aircraft.FlyHours;
+                }
+
                 string text = string.Empty;
                 text = String.Format("INSERT INTO {0} VALUES('{1}',EncryptByPassPhrase('12','{2}'),'{3}');",
                     SqlMidlandsFly.Instance.Table_Employees.Name,
@@ -44,17 +60,21 @@ namespace MidlandsFly
                 if (employee.EmployeeType == EmployeeType.Cabin_Crew
                     || employee.EmployeeType == EmployeeType.Flight_Deck)
                 {
+                    text += String.Format("INSERT INTO {0} VALUES('{1}',{2});",
+                        SqlMidlandsFly.Instance.Table_FlightHours.Name,
+                        MathExt.IntToFixedString((int)employee.Id, Employee.IdLength),
+                        hours);
                     text += String.Format("INSERT INTO {0} VALUES('{1}','{2}');",
                         SqlMidlandsFly.Instance.Table_Assignment.Name,
                         MathExt.IntToFixedString((int)employee.Id, Employee.IdLength),
                         regNumber);
-                    text += String.Format("INSERT INTO {0} VALUES('{1}',{2});",
-                        SqlMidlandsFly.Instance.Table_FlightHours.Name,
-                        MathExt.IntToFixedString((int)employee.Id, Employee.IdLength),
-                        0);
                 }
-                else if (employee.EmployeeType == EmployeeType.Ground_Crew)
+                if (employee.EmployeeType == EmployeeType.Ground_Crew)
                 {
+                    for (int m = 0; m <= random.Next(1, 3); m++)
+                    {
+                        Instance.AddMaintenance(employee.Id, MaintenanceHistory.GenerateRandomDescription(), regNumber);
+                    }
                     text += String.Format("INSERT INTO {0} VALUES('{1}','{2}');",
                         SqlMidlandsFly.Instance.Table_Assignment.Name,
                         MathExt.IntToFixedString((int)employee.Id, Employee.IdLength),

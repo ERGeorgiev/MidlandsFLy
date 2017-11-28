@@ -21,6 +21,9 @@ public class CargoAircraft : Aircraft
     {
         RegNumber_end = regNumber;
         this.Capacity_metricTonnes = capacity_mTonnes;
+        this.FlightCrew = 3;
+        this.CabinCrew = 0;
+        this.GroundCrew = 5;
     }
 
     // CreateInstance method is used for instanstiating instead of the default constructor in order

@@ -9,6 +9,9 @@ public abstract class Aircraft
 {
     #region Fields
 
+    private byte flightCrew = 0;
+    private byte cabinCrew = 0;
+    private byte groundCrew = 0;
     private const byte regNumber_digitCount = 3;
     private const byte regNumber_idCount = 1;
     // regNumber digit and letter count requirement variables.
@@ -118,6 +121,9 @@ public abstract class Aircraft
 
     public static uint MaintenanceRepetition_hours { get => maintenanceRepetition_hours; }
     public static uint MaintenanceDuration_hours { get => maintenanceDuration_hours; }
+    public byte FlightCrew { get => flightCrew; set => flightCrew = value; }
+    public byte CabinCrew { get => cabinCrew; set => cabinCrew = value; }
+    public byte GroundCrew { get => groundCrew; set => groundCrew = value; }
 
     #endregion Properties
 

@@ -92,9 +92,10 @@
 
         <header>
             <h1><%: Page.Title %>            </h1>
+            Mode: <asp:DropDownList ID="DropDownList_Mode" runat="server" DataSourceID="DatabaseMode" AutoPostBack="True" DataTextField="value" DataValueField="value" OnSelectedIndexChanged="FastSim_Toggle"></asp:DropDownList>
+            <asp:XmlDataSource ID="DatabaseMode" runat="server" DataFile="~/App_Data/DatabaseMode.xml"></asp:XmlDataSource>
         <p class="text-danger centered">
-            <asp:Literal runat="server" ID="ErrorMessage" />
-        </p>
+            <asp:Literal runat="server" ID="ErrorMessage" /></p>
             </header>
 
         <div class="navbar navbar-inverse navbar-fixed-top">

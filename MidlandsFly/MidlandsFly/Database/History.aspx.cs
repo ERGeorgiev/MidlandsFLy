@@ -4,6 +4,8 @@ using MidlandsFly.Sql;
 using MidlandsFly;
 using Database.Enums;
 using System.Web.UI.WebControls;
+using System.Data.SqlClient;
+using System.Text.RegularExpressions;
 
 public partial class Homepage : System.Web.UI.Page
 {
@@ -56,5 +58,30 @@ public partial class Homepage : System.Web.UI.Page
     {
         command = "SELECT * FROM [" + SqlMidlandsFly.Instance.Table_MaintenanceHistory.Name + "];";
         ChangeGrid(sender, e);
+    }
+
+    protected void FilterReset(object sender, EventArgs e)
+    {
+        TextBox_RegNumber.Text = "";
+        ChangeGrid_Maintenance(sender, e);
+    }
+
+    protected void Filter(object sender, EventArgs e)
+    {
+        string regNumber = string.Empty;
+        if (Regex.IsMatch(TextBox_RegNumber.Text, @"^[a-zA-Z]{3}\d{3}$")
+            && TextBox_RegNumber.Text.Length <= 6)
+        {
+            regNumber = TextBox_RegNumber.Text;
+            command = "SELECT * FROM [" + SqlMidlandsFly.Instance.Table_MaintenanceHistory.Name + "]";
+            command += String.Format(" where {0} = '{1}'",
+                Database.Enums.Parameter.regNumber,
+                regNumber);
+            ChangeGrid(sender, e);
+        }
+        else
+        {
+            this.Master.ErrMessage = "Did you hack the validator? Only 3 numbers and 3 letters are allowed! (Ex. AAA111)";
+        }
     }
 }

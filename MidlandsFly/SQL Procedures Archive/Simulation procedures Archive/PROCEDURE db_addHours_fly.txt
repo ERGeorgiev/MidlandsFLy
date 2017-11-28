@@ -1,4 +1,4 @@
-create PROCEDURE db_addHours_fly @hours int, @regNumber varchar(6)
+CREATE PROCEDURE db_addHours_fly @hours int, @regNumber varchar(6)
 as
 
 DECLARE 
@@ -6,27 +6,24 @@ DECLARE
 @stagehrs int = (select STAGE_HOUR from stage where aircraft_number=@regNumber );
 set	@hours = @hours - (@fly_time - @stagehrs);
 begin
-	IF (@hours <= 0)
+	IF (@hours < 0)
 	begin
 	    update stage
         set STAGE_HOUR = @fly_time + @hours
         where aircraft_number=@regNumber;
 		return 0;
 	end
-
-	ELSE
-	
+	ELSE	
 	begin
-		exec db_addHours_plane @regNumber ;
+		exec db_addHours_plane @regNumber 
 		exec db_increaseStage @hours, @regNumber
 		declare @checkmaintenace int;
 		exec @checkmaintenace = db_plane_maintenanceCheck @regNumber
-		if @checkmaintenace = 1
+		IF (@checkmaintenace = 1)
 		begin
 		   insert into Maintenance values (@regNumber, 0);
-		   return @hours;
+		   exec db_assign_groundCrew @regNumber, 5;
 		end
+		return @hours;
 	end
-	end
-
-	
+end

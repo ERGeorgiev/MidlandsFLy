@@ -5,12 +5,18 @@ using System.Web;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Database.Enums;
+using System.Collections.Generic;
+using System.Data.SqlClient;
 
 public partial class SiteMaster : MasterPage
 {
     private const string AntiXsrfTokenKey = "__AntiXsrfToken";
     private const string AntiXsrfUserNameKey = "__AntiXsrfUserName";
     private string _antiXsrfTokenValue;
+    public static bool FastSimulation = false;
+    public static string CurrentMode = "Hours";
+    public static DateTime lastUpdate = DateTime.Now;
 
     protected void Page_Init(object sender, EventArgs e)
     {
@@ -65,11 +71,68 @@ public partial class SiteMaster : MasterPage
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        if ((System.Web.HttpContext.Current.User != null) && System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
+        {
+            DropDownList_Mode.Enabled = true;
+            if (!IsPostBack)
+            {
+                DropDownList_Mode.SelectedValue = CurrentMode;
+            }
+            if ((DateTime.Now - lastUpdate).Seconds > 10)
+            {
+                if (FastSimulation)
+                {
+                    SqlCommand command = new SqlCommand("db_update_sim");
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    try
+                    {
+                        SqlMidlandsFly.Instance.Execute(command);
+                    }
+                    catch (Exception ex)
+                    {
+                        ErrMessage = String.Format("Message: {0}", ex.Message);
+                    }
+                }
+                else
+                {
+                    SqlCommand command = new SqlCommand("db_update");
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    try
+                    {
+                        SqlMidlandsFly.Instance.Execute(command);
+                    }
+                    catch (Exception ex)
+                    {
+                        ErrMessage = String.Format("Message: {0}", ex.Message);
+                    }
+                }
+            }
+        }
+        else
+        {
+            DropDownList_Mode.Enabled = false;
+        }
     }
 
     protected void Unnamed_LoggingOut(object sender, LoginCancelEventArgs e)
     {
         Context.GetOwinContext().Authentication.SignOut();
+    }
+
+    protected void FastSim_Toggle(object sender, EventArgs e)
+    {
+        if ((System.Web.HttpContext.Current.User != null) && System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
+        {
+            CurrentMode = DropDownList_Mode.SelectedValue;
+            if (DropDownList_Mode.SelectedValue == "Seconds")
+            {
+                FastSimulation = true;
+            }
+            else
+            {
+                FastSimulation = false;
+            }
+        }
     }
 
     protected void AddRecords(object sender, EventArgs e)
@@ -123,6 +186,19 @@ public partial class SiteMaster : MasterPage
     {
         if ((System.Web.HttpContext.Current.User != null) && System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
         {
+            int hours = 24;
+            SqlCommand command = new SqlCommand("db_addHours_toAll");
+            command.CommandType = System.Data.CommandType.StoredProcedure;
+            command.Parameters.Add(new SqlParameter("hours", hours));
+            try
+            {
+                SqlMidlandsFly.Instance.Execute(command);
+                Response.Redirect(Request.Url.AbsoluteUri);
+            }
+            catch (Exception ex)
+            {
+                ErrMessage = String.Format("Message: {0}", ex.Message);
+            }
         }
     }
 
@@ -130,6 +206,19 @@ public partial class SiteMaster : MasterPage
     {
         if ((System.Web.HttpContext.Current.User != null) && System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
         {
+            int hours = 100;
+            SqlCommand command = new SqlCommand("db_addHours_toAll");
+            command.CommandType = System.Data.CommandType.StoredProcedure;
+            command.Parameters.Add(new SqlParameter("hours", hours));
+            try
+            {
+                SqlMidlandsFly.Instance.Execute(command);
+                Response.Redirect(Request.Url.AbsoluteUri);
+            }
+            catch (Exception ex)
+            {
+                ErrMessage = String.Format("Message: {0}", ex.Message);
+            }
         }
     }
 

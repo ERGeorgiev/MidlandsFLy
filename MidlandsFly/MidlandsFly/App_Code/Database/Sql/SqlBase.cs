@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.UI;
 
 /// <summary>
@@ -83,6 +84,14 @@ namespace Database
                         }
                     }
                 }
+                catch (SqlException ex)
+                {
+                    if (ex.Number == ErrorCode.NoConnectionA || ex.Number == ErrorCode.NoConnectionB)
+                    {
+                        throw new Exception("No connection with the database. Please try again or contact the administrator.");
+                    }
+                    throw;
+                }
                 catch (Exception ex)
                 {
                     if (ex.Message == "Collection was modified; enumeration operation may not execute.")
@@ -121,6 +130,14 @@ namespace Database
                         }
                     }
                 }
+                catch (SqlException ex)
+                {
+                    if (ex.Number == ErrorCode.NoConnectionA || ex.Number == ErrorCode.NoConnectionB)
+                    {
+                        throw new Exception("No connection with the database. Please try again or contact the administrator.");
+                    }
+                    throw;
+                }
                 catch (Exception ex)
                 {
                     if (ex.Message == "Collection was modified; enumeration operation may not execute.")
@@ -136,7 +153,7 @@ namespace Database
                 }
 
                 return received;
-            }
+            }            
 
             private List<string> ExecuteRead(SqlDataReader reader, byte columnNumber = 0)
             {

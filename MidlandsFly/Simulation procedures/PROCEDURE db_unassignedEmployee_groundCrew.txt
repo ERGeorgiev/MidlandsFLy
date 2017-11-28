@@ -1,0 +1,12 @@
+CREATE PROCEDURE get_unassignedEmployee_groundCrew
+AS	
+DECLARE
+@employee varchar(5)
+set @employee =
+	(SELECT TOP 1 eas.Employee_ID
+	FROM Employees_Assignment eas, Employees e
+	WHERE e.Employee_ID = eas.Employee_ID
+		AND eas.Aircraft_Number = 'N/A'
+		AND e.Employee_Type = 'Ground_Crew'
+	ORDER BY NEWID());
+RETURN @employee

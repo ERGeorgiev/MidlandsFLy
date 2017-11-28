@@ -1,0 +1,16 @@
+﻿CREATE PROCEDURE db_maintenanceCompleteCheck_sim @regnumber varchar(6)
+as
+delete from maintenance
+where EXISTs (select *,  datediff(second, MAINTENANCE_HOUR, SYSDATETIME()) as theDateDiff
+              from maintenance
+              where 
+              datediff(second, MAINTENANCE_HOUR, SYSDATETIME()) >=24  )
+and AIRCRAFT_NUMBER =@regnumber
+
+update passenger_aircraft
+set last_maintenance = flying_hours 
+where aircraft_number = @regnumber
+ 
+update cargo_aircraft
+set last_maintenance = flying_hours
+where aircraft_number = @regnumber;

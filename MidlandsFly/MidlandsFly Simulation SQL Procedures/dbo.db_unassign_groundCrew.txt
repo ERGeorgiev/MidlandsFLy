@@ -1,0 +1,27 @@
+﻿CREATE PROCEDURE db_unassign_groundCrew
+	@regNumber varchar(6)
+AS		
+DECLARE
+@employee varchar(5)
+	
+	set @employee =
+		(SELECT TOP 1 eas.Employee_ID
+		FROM Employees_Assignment eas, Employees e
+		WHERE e.Employee_ID = eas.Employee_ID
+			AND eas.Aircraft_Number = @regNumber
+			AND e.Employee_Type = 'Ground_Crew'
+		ORDER BY NEWID());
+	WHILE @employee != ''
+	begin
+		update Employees_Assignment
+		set Aircraft_Number = 'N/A'
+		where Employee_ID = @employee
+		set @employee =
+			(SELECT TOP 1 eas.Employee_ID
+			FROM Employees_Assignment eas, Employees e
+			WHERE e.Employee_ID = eas.Employee_ID
+				AND eas.Aircraft_Number = @regNumber
+				AND e.Employee_Type = 'Ground_Crew'
+			ORDER BY NEWID());
+	end
+RETURN 0

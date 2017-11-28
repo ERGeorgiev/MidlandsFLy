@@ -1,0 +1,14 @@
+﻿create procedure get_update_hours @regnumber varchar(6)
+as
+declare
+@minute int = (select floor(datediff(minute, LAST_UPDATE, SYSDATETIME())/60)  as theDateDiff
+              from cargo_aircraft
+              where AIRCRAFT_NUMBER = @regnumber
+              union
+ select floor(datediff(minute, LAST_UPDATE, SYSDATETIME())/60)  as theDateDiff
+              from passenger_aircraft
+              where AIRCRAFT_NUMBER = @regnumber);
+begin
+
+              return @minute ;
+end

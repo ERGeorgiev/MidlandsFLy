@@ -1,0 +1,18 @@
+﻿create procedure db_plane_update_sim @regnumber varchar(6)
+as
+declare @hours int;
+exec @hours = get_update_hours_sim @regnumber;
+begin 
+
+	IF (@hours > 0)
+	begin 
+		exec db_addHours @hours, @regnumber
+		update cargo_aircraft
+		set LAST_UPDATE = SYSDATETIME()
+		where AIRCRAFT_NUMBER = @regnumber;
+
+		update passenger_aircraft
+		set LAST_UPDATE = SYSDATETIME()
+		where AIRCRAFT_NUMBER = @regnumber;
+	end 
+end

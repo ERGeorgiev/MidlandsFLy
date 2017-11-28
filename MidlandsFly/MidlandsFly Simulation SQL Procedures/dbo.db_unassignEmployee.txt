@@ -1,0 +1,7 @@
+﻿CREATE PROCEDURE db_unassignEmployee
+	@id varchar(5)
+AS	
+	update Employees_Assignment
+	set Aircraft_Number = 'N/A'
+	where Employee_ID = @id;
+RETURN 0

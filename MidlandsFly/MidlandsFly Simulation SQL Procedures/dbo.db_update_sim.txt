@@ -1,0 +1,37 @@
+﻿CREATE PROCEDURE db_update_sim
+AS
+DECLARE @regNumber varchar(6) 
+
+DECLARE the_cursor CURSOR FAST_FORWARD
+FOR SELECT Aircraft_Number 
+	FROM Cargo_Aircraft
+
+OPEN the_cursor
+FETCH NEXT FROM the_cursor INTO @regNumber
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+    EXEC db_plane_update_sim @regNumber
+
+    FETCH NEXT FROM the_cursor INTO @regNumber
+END
+
+CLOSE the_cursor
+DEALLOCATE the_cursor
+
+DECLARE the_cursor CURSOR FAST_FORWARD
+FOR SELECT Aircraft_Number 
+	FROM Passenger_Aircraft
+
+OPEN the_cursor
+FETCH NEXT FROM the_cursor INTO @regNumber
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+    EXEC db_plane_update_sim @regNumber
+
+    FETCH NEXT FROM the_cursor INTO @regNumber
+END
+
+CLOSE the_cursor
+DEALLOCATE the_cursor

@@ -1,0 +1,5 @@
+﻿create PROCEDURE db_increaseStage @hours int, @regNumber varchar(6)
+as
+	update stage
+    set STAGE_HOUR = 0, STAGE = STAGE+1
+    where @regNumber = AIRCRAFT_NUMBER;

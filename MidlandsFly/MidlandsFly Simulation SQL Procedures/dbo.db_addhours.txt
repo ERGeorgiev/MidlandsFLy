@@ -1,0 +1,49 @@
+﻿CREATE PROCEDURE db_addhours @hours int, @regNumber varchar(6)
+as
+declare 
+@planestage int = (select STAGE from stage where @regnumber = AIRCRAFT_NUMBER );
+begin
+
+	IF ((@hours > 0) AND exists (SELECT AIRCRAFT_NUMBER FROM maintenance where aircraft_number=@regNumber))
+	begin 
+		exec @hours =  db_addHours_maint @hours, @regNumber ;
+    end
+
+	IF ((@hours > 0) AND @planestage = 0) 
+	begin 
+		exec @hours = db_addHours_prep @hours, @regNumber ;
+    end
+	set @planestage = (select STAGE from stage where @regnumber = AIRCRAFT_NUMBER ); 
+	
+	IF ((@hours > 0) AND @planestage = 1) 
+	begin 
+		exec @hours = db_addHours_fly @hours, @regNumber;
+	end
+	set @planestage = (select STAGE from stage where @regnumber = AIRCRAFT_NUMBER ); 
+	IF ((@hours > 0) AND exists (SELECT AIRCRAFT_NUMBER FROM maintenance where aircraft_number=@regNumber))
+	begin 
+		exec @hours = db_addHours_maint @hours, @regNumber;
+	end 
+	
+	IF ((@hours > 0) AND @planestage = 2) 
+	begin 
+		exec @hours = db_addHours_prep @hours, @regNumber;
+	end
+	set @planestage = (select STAGE from stage where @regnumber = AIRCRAFT_NUMBER ); 
+	
+	IF ((@hours > 0) AND @planestage = 3) 
+	begin 
+		exec @hours = db_addHours_fly @hours, @regNumber;
+	end
+	set @planestage = (select STAGE from stage where @regnumber = AIRCRAFT_NUMBER ); 
+
+	IF ((@hours > 0) AND exists (SELECT AIRCRAFT_NUMBER FROM maintenance where aircraft_number=@regNumber))
+	begin 
+		exec @hours = db_addHours_maint @hours, @regNumber;
+	end
+
+	IF (@planestage = 4)
+	begin
+		exec NewCycle @hours, @regNumber;
+	end
+end

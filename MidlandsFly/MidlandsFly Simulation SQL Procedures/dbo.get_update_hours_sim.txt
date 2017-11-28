@@ -1,0 +1,15 @@
+﻿create procedure get_update_hours_sim @regnumber varchar(6)
+as
+declare
+@second int = (select (datediff(SECOND, LAST_UPDATE, SYSDATETIME()))  as theDateDiff
+              from cargo_aircraft
+              where AIRCRAFT_NUMBER = @regnumber
+              union
+ select (datediff(SECOND, LAST_UPDATE, SYSDATETIME()))  as theDateDiff
+              from passenger_aircraft
+              where AIRCRAFT_NUMBER = @regnumber);
+
+begin
+
+              return @second ;
+end

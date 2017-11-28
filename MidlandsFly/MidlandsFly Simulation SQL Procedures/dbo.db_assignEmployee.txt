@@ -1,0 +1,8 @@
+﻿CREATE PROCEDURE db_assignEmployee
+	@id varchar(5),
+	@regNumber varchar(6)
+AS	
+	update Employees_Assignment
+	set Aircraft_Number = @regNumber
+	where Employee_ID = @id;
+RETURN 0

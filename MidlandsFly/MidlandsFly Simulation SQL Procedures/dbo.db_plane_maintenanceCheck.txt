@@ -1,0 +1,11 @@
+﻿CREATE PROCEDURE db_plane_maintenanceCheck @regnumber varchar(6)
+as
+declare @checkmaintenance int = 
+(select (Flying_Hours-Last_Maintenance) from Cargo_Aircraft
+where Aircraft_Number= @regNumber
+union
+select (Flying_Hours-Last_Maintenance) from Passenger_Aircraft
+where Aircraft_Number= @regNumber);
+
+IF (@checkmaintenance >= 200) return 1;
+ELSE return 0;

@@ -1,0 +1,4 @@
+select e.EMPLOYEE_ID,convert(varchar(64), DECRYPTBYPASSPHRASE ('12',EMPLOYEE_NAME)),EMPLOYEE_TYPE,FLYING_HOURS
+from employees  e , employees_flighthours  ehrs
+where  e.EMPLOYEE_ID = ehrs.EMPLOYEE_ID
+and e.EMPLOYEE_TYPE = 'Flight_Deck';

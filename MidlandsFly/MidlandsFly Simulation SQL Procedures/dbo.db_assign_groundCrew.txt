@@ -1,0 +1,31 @@
+﻿CREATE PROCEDURE db_assign_groundCrew
+	@regNumber varchar(6),
+	@employeeCount int = 1
+AS	
+DECLARE
+	@employeeNumber int = 0,
+	@employee varchar(5),
+	@description varchar(255)
+	WHILE @employeeNumber < @employeeCount
+	begin
+		set @employee =
+			(SELECT TOP 1 eas.Employee_ID
+			FROM Employees_Assignment eas, Employees e
+			WHERE e.Employee_ID = eas.Employee_ID
+				AND eas.Aircraft_Number = 'N/A'
+				AND e.Employee_Type = 'Ground_Crew'
+			ORDER BY NEWID());
+		update Employees_Assignment
+		set Aircraft_Number = @regNumber
+		where Employee_ID = @employee;
+		if (@employeeNumber = (@employeeCount - 1))
+			begin
+			set @description =
+				(SELECT TOP 1 MaintenanceHistory.Description
+				FROM MaintenanceHistory
+				ORDER BY NEWID());
+			insert into MaintenanceHistory values(@regNumber, @employee, @description)
+			end
+		set @employeeNumber = @employeeNumber + 1
+	end
+RETURN 0

@@ -1,0 +1,8 @@
+﻿CREATE PROCEDURE db_plane_removeMaintenanceAndUpdate @regnumber varchar(6)
+AS
+begin
+	IF (EXISTS (SELECT AIRCRAFT_NUMBER FROM maintenance where aircraft_number=@regNumber))
+	begin 
+		delete from Maintenance where AIRCRAFT_NUMBER=@regNumber
+	end 
+end

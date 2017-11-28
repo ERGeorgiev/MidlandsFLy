@@ -1,0 +1,12 @@
+﻿CREATE PROCEDURE [dbo].[InsertXML]
+@xml XML
+AS
+BEGIN
+      SET NOCOUNT ON;
+ 
+      INSERT INTO MaintenaneHistoryDescription
+      SELECT
+      History.value('@description','VARCHAR(255)') AS Description
+      FROM
+      @xml.nodes('/maintenance/description') AS TEMPTABLE(History)
+END

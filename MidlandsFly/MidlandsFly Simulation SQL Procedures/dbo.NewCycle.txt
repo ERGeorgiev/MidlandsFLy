@@ -94,15 +94,11 @@ begin
 	set @mini_target = @mini_target - @duration_prep;
 	set @flyHours = @flyHours + @mini_target;
 end
-update Cargo_Aircraft
-set Flying_Hours = Flying_Hours + @flyHours
-where Aircraft_Number = @regNumber;
-update Passenger_Aircraft
-set Flying_Hours = Flying_Hours + @flyHours
-where Aircraft_Number = @regNumber;
 
+exec db_addHours_fly @flyHours, @regNumber
+
+-- @hours being sized into a single duration spanning across the 4 stages
 set @hours = ((@hours%@duration_cycle)%(@duration*2));
-
 IF (0 <= @hours) AND (@hours < @duration_prep)
 begin 
 	set @stage = 0;

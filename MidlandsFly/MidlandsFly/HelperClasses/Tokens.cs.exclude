@@ -1,0 +1,36 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Threading.Tasks;
+using System.Net.Http;
+using Newtonsoft.Json.Linq;
+
+/// <summary>
+/// Summary description for Tokens
+/// </summary>
+public class Tokens
+{
+    private Uri BaseAddress = new Uri("https://iatacodes.org/api/v6/aircrafts?api_key=");
+    public string AccessToken { set; get;  }
+    public async Task<string> GetToken(string username, string password)
+    {
+        using (HttpClient httpClient = new HttpClient())
+        {
+            httpClient.BaseAddress = BaseAddress;
+            using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, new Uri(BaseAddress, "/token")))
+            {
+                request.Content = new FormUrlEncodedContent(new Dictionary<string, string>()
+                {
+                    {"name", "name" },
+                    {"code", "code" }
+                });
+
+                HttpResponseMessage response = await httpClient.SendAsync(request);
+                string result = await response.Content.ReadAsStringAsync();
+                JObject jObject = JObject.Parse(result);
+                return (String)jObject["access_token"];
+            }
+        }
+    }
+}

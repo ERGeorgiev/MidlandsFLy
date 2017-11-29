@@ -95,7 +95,7 @@ begin
 	set @flyHours = @flyHours + @mini_target;
 end
 
-exec db_addHours_fly @flyHours, @regNumber
+exec db_addHours_plane @flyHours, @regNumber
 
 -- @hours being sized into a single duration spanning across the 4 stages
 set @hours = ((@hours%@duration_cycle)%(@duration*2));

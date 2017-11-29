@@ -38,7 +38,7 @@ Note: You may have to alter the database connection string in order to use the w
 |SQL|
 ## References
 
-|Sources||
+|Sources|
 | --- |
 |http://www.fakenamegenerator.com|
 |http://icoconvert.com|

@@ -38,4 +38,8 @@ Note: You may have to alter the database connection string in order to use the w
 |SQL|
 ## References
 
-<to be added>
+|Sources|
+|http://www.fakenamegenerator.com|
+|http://icoconvert.com|
+|http://av-info.faa.gov|
+|https://stackoverflow.com|

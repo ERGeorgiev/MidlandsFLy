@@ -30,3 +30,15 @@
         </article>
     </div>
 </asp:Content>
+
+<%--
+/////////////////////////////////////////////////////////////////////////////
+References:
+
+# Display time on ASP.NET server side (CSASPNETServerClock)
+https://code.msdn.microsoft.com/CSASPNETServerClock-23c659d4
+    # MSDN: Calling Web Services from Client Script
+    http://msdn.microsoft.com/en-us/library/bb398995.aspx
+
+////////////////////////////////////////////////////////////////////////////
+--%>

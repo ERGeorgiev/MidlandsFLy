@@ -35,7 +35,6 @@ Note: You may have to alter the database connection string in order to use the w
 |JavaScript|
 |XML|
 |T-SQL|
-|SQL|
 ## References
 
 |Sources|
@@ -43,4 +42,3 @@ Note: You may have to alter the database connection string in order to use the w
 |http://www.fakenamegenerator.com|
 |http://icoconvert.com|
 |http://av-info.faa.gov|
-|https://stackoverflow.com|

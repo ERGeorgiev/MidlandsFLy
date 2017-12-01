@@ -9,8 +9,6 @@ using System.Text.RegularExpressions;
 
 public partial class Homepage : System.Web.UI.Page
 {
-    // To try catch table in HTML or smth like that in case there is no such table
-    private static Demonstration Demonstration = new Demonstration();
     private static string command = "unassigned";
 
     protected void Page_Load(object sender, EventArgs e)

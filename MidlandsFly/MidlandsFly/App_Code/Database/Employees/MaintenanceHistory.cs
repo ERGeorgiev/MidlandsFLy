@@ -42,14 +42,4 @@ public class MaintenanceHistory
 
         return desc[random.Next(0, desc.Count)];
     }
-
-    //public MaintenanceHistory(string date, string description = "none", MaintenanceType maintenanceType = MaintenanceType.Unknown) : this(description, maintenanceType)
-    //{
-    //    if (DateTime.TryParse(date, out DateTime dateCheck) == true)
-    //    {
-    //        this.Date = dateCheck;
-    //    }
-    //    else
-    //        throw new FormatException("Date must be entered in the following format: MM/dd/yyyy");
-    //}
 }

@@ -15,7 +15,7 @@ begin
 	end
 	ELSE	
 	begin
-		exec db_addHours_plane @regNumber 
+		exec db_addHours_plane @fly_time, @regNumber 
 		exec db_increaseStage @hours, @regNumber
 		declare @checkmaintenace int;
 		exec @checkmaintenace = db_plane_maintenanceCheck @regNumber

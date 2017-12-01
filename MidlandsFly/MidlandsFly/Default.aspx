@@ -4,34 +4,27 @@
 
     <div class="jumbotron">
         <h1>MIDLANDS FLY</h1>
-        <p class="lead">Devloped for Coventry University - Internet Systems Development using C#, HTML, XML, JavaScript.</p>
+        <p class="lead">Devloped for Coventry University - M32COM_1718OCTJAN (Internet Systems Development)</p>
     </div>
 
     <div class="row">
         <div class="col-md-4">
-            <h2>Libraries and Frameworks:</h2>
-            <p>
-                NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.
-            </p>
-            <p>
-                <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301949">Learn more &raquo;</a>
-            </p>
-        </div>
-        <div class="col-md-4">
             <h2>References:</h2>
-            <p>
-                You can easily find a web hosting company that offers the right mix of features and price for your applications.
-            </p>
-            <p>
-                Favicon.ico generated form http://icoconvert.com/</p>
-            <p>
-                <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301950">Learn more &raquo;</a>
-            </p>
-        </div>
-    </div>   
-    
+                Maintenance Data: <a href="http://av-info.faa.gov/ ">http://av-info.faa.gov/ </a>
+            <br />
+                Employee Names: <a href="http://www.fakenamegenerator.com/">http://www.fakenamegenerator.com/</a>
+            <br />
+                Favicon.ico generated from: <a href="http://icoconvert.com/">http://icoconvert.com/</a>
+            <br />
+        </div> 
+     </div>
+            <h2>Group A:</h2>    
     <address>
-        <strong>T-SQL and Azure Management:</strong> <a href="mailto:Support@example.com">Saif Alzubi</a><br />
-        <strong>C# and HTML Software Developer:</strong> <a href="mailto:Marketing@example.com">Eduard Georgiev</a><br />
-        <strong>Testing and Documentation:</strong> <a href="mailto:Marketing@example.com">Oumaru Beyai</a></address>
+        <a href="mailto:elzubis@uni.coventry.ac.uk">Saif Alzubi</a> - <strong>T-SQL, Stored Procedures, Azure and Database management.</strong> 
+        <br />
+        <a href="mailto:georgiee@uni.coventry.ac.uk">Eduard Georgiev</a> - <strong>C#, HTML, XML, JavaScript and Stored Procedures development.</strong> 
+        <br />
+        <a href="mailto:beyaio@uni.coventry.ac.uk">Oumaru Beyaio</a> - <strong>Testing and Documentation.</strong>
+        <br />
+    </address>
 </asp:Content>

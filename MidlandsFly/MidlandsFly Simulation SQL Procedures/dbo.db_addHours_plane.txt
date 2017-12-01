@@ -1,16 +1,16 @@
-﻿create PROCEDURE db_addHours_plane @regNumber varchar(6)
+﻿CREATE PROCEDURE db_addHours_plane @hours int, @regNumber varchar(6)
 as
 
 UPDATE cargo_aircraft
-SET FLYING_HOURS = FLYING_HOURS + FLIGHT_DURATION
-FROM stage
-WHERE
-  cargo_aircraft.AIRCRAFT_NUMBER = stage.AIRCRAFT_NUMBER
-  and cargo_aircraft.AIRCRAFT_NUMBER = @regNumber
+SET FLYING_HOURS = FLYING_HOURS + @hours
+WHERE cargo_aircraft.AIRCRAFT_NUMBER = @regNumber
 
 UPDATE passenger_aircraft
-SET FLYING_HOURS = FLYING_HOURS + FLIGHT_DURATION
-FROM stage
-WHERE
- passenger_aircraft.AIRCRAFT_NUMBER = stage.AIRCRAFT_NUMBER
-  and passenger_aircraft.AIRCRAFT_NUMBER = @regNumber
+SET FLYING_HOURS = FLYING_HOURS + @hours
+WHERE passenger_aircraft.AIRCRAFT_NUMBER = @regNumber
+
+UPDATE eFh
+SET eFh.Flying_Hours = eFh.Flying_Hours + @hours
+from Employees_FlightHours eFh, Employees_Assignment eAs
+WHERE eAs.Employee_ID = eFh.Employee_ID
+	AND eAs.Aircraft_Number = @regNumber

@@ -74,7 +74,7 @@ namespace MidlandsFly
                 Table_Employees = new SqlTable(
                     "Employees",
                     new SqlParameter(Parameter.id, System.Data.SqlDbType.VarChar, Employee.IdLength),
-                    new SqlParameter(Parameter.name, System.Data.SqlDbType.VarBinary, 64), //TODO: Explain why 64 -> https://dba.stackexchange.com/questions/120929/how-long-is-the-output-of-encryptbypassphrase-relative-to-the-input
+                    new SqlParameter(Parameter.name, System.Data.SqlDbType.VarBinary, 64),
                     new SqlParameter(Parameter.employeeType, System.Data.SqlDbType.VarChar, Employee.employeeType_length));
                 Table_FlightHours = new SqlTable(
                     "Employees_FlightHours",
@@ -194,7 +194,6 @@ namespace MidlandsFly
             {
                 // The first letter of regNumber_begin is used as an indicator for all items in the table
                 // by having a first letter, the need to check for regNumber in more than one table is eliminated
-                // TODO: Option for advanced search were it searches the whole table for holes between regnumbers too
                 string regNumber_id = String.Empty;
                 byte digitsLength = Aircraft.RegNumber_digitCount;
                 byte lettersLength = Aircraft.RegNumber_letterCount;
